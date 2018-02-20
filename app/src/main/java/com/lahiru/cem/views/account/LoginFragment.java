@@ -1,6 +1,8 @@
 package com.lahiru.cem.views.account;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.app.Fragment;
@@ -68,8 +70,23 @@ public class LoginFragment extends Fragment {
 
                     if (account != null) {
                         activity.setCurAccount(account);
+
+                        SharedPreferences accPreferences = activity.getSharedPreferences("ACCOUNT_PREFERENCES", Context.MODE_PRIVATE);
+                        SharedPreferences.Editor editor = accPreferences.edit();
+                        if (isRemember) {
+                            editor.putString("ACC_NAME", curAccount.getAccountName());
+                            editor.putString("AID", curAccount.getAid());
+                        } else {
+                            editor.remove("ACC_NAME");
+                            editor.remove("AID");
+                        }
+                        editor.apply();
+
                         Intent intent = new Intent("com.lahiru.cem.views.home.HomeActivity");
+                        intent.putExtra("ACC_NAME", curAccount.getAccountName());
+                        intent.putExtra("AID", curAccount.getAid());
                         startActivity(intent);
+
                         activity.finish();
                     } else {
                         Toast.makeText(getActivity(), "Wrong PIN", Toast.LENGTH_SHORT).show();
