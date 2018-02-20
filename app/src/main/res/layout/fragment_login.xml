@@ -1,0 +1,87 @@
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/frameLayout4"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.lahiru.cem.views.account.LoginFragment">
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="32dp"
+        android:fontFamily="sans-serif"
+        android:text="Welcome"
+        android:textAlignment="center"
+        android:textColor="@color/black_overlay"
+        android:textSize="36sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_pin"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:fontFamily="sans-serif"
+        android:text="AccountName"
+        android:textAlignment="center"
+        android:textColor="@color/black_overlay"
+        android:textSize="24sp"
+        android:textStyle="italic"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView2" />
+
+    <EditText
+        android:id="@+id/edt_pin"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="70dp"
+        android:layout_marginStart="70dp"
+        android:layout_marginTop="60dp"
+        android:background="@drawable/rounded_corner"
+        android:ems="10"
+        android:hint="PIN"
+        android:inputType="numberPassword"
+        android:padding="10dp"
+        android:textAlignment="center"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_pin" />
+
+    <CheckBox
+        android:id="@+id/cb_remember"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="Remember me"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/edt_pin" />
+
+    <Button
+        android:id="@+id/btn_login"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="LOGIN"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="@+id/cb_remember"
+        app:layout_constraintStart_toStartOf="@+id/cb_remember"
+        app:layout_constraintTop_toBottomOf="@+id/cb_remember" />
+
+</android.support.constraint.ConstraintLayout>

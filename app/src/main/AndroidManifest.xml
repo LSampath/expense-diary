@@ -7,40 +7,32 @@
         android:icon="@mipmap/ic_launcher"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
+        android:label="Expense Diary"
         android:theme="@style/AppTheme">
-
         <activity
-            android:name=".HomeActivity"
-            android:label="@string/title_activity_home">
+            android:name=".views.home.HomeActivity"
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+                <action android:name="com.lahiru.cem.views.home.HomeActivity" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-
         <activity
-            android:name=".TransactionActivity"
-            android:label="@string/title_activity_transaction">
-            <!--<intent-filter>-->
-                <!--<action android:name="com.lahiru.cem.TransactionActivity" />-->
-                <!--<category android:name="android.intent.category.DEFAULT" />-->
-            <!--</intent-filter>-->
+            android:name=".views.TransactionActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="com.lahiru.cem.views.TransactionActivity" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".views.account.StartActivity"
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <activity
-            android:name=".TestActivity"
-            android:label="@string/title_activity_test"
-            android:theme="@style/AppTheme.NoActionBar">
-            <!--<intent-filter>-->
-                <!--<action android:name="android.intent.action.MAIN" />-->
-                <!--<category android:name="android.intent.category.LAUNCHER" />-->
-            <!--</intent-filter>-->
-        </activity>
-
     </application>
 
 </manifest>

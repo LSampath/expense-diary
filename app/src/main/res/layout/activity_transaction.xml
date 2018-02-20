@@ -2,11 +2,10 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/trasaction_content"
+    android:id="@+id/transaction_content"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
-    tools:context="com.lahiru.cem.TransactionActivity">
+    tools:context="com.lahiru.cem.views.TransactionActivity">
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/appbar"
@@ -14,41 +13,40 @@
         android:layout_height="wrap_content"
         android:background="?attr/colorPrimary"
         android:theme="@style/AppTheme.AppBarOverlay"
-        android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintStart_toStartOf="parent">
 
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="?attr/colorPrimary"
-            app:layout_scrollFlags="scroll|enterAlways"
             app:navigationIcon="?attr/homeAsUpIndicator"
             app:popupTheme="@style/AppTheme.PopupOverlay"
             app:title="@string/title_activity_transaction" />
 
     </android.support.design.widget.AppBarLayout>
 
-    <include
-        android:id="@+id/include"
-        layout="@layout/content_test"
+    <ImageView
+        android:id="@+id/amountView"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="12dp"
+        app:layout_constraintBottom_toBottomOf="@+id/amountTxt"
+        app:layout_constraintEnd_toStartOf="@+id/amountTxt"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/appBarLayout"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintTop_toTopOf="@+id/amountTxt"
+        app:layout_constraintVertical_bias="0.481"
+        app:srcCompat="@drawable/si_glyph_money" />
 
     <EditText
         android:id="@+id/amountTxt"
-        android:layout_width="0dp"
+        android:layout_width="279dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="32dp"
-        android:layout_marginStart="8dp"
         android:layout_marginTop="24dp"
         android:layout_weight="1"
         android:ems="10"
@@ -56,8 +54,21 @@
         android:inputType="numberDecimal"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/textView5"
         app:layout_constraintTop_toBottomOf="@+id/appbar" />
+
+    <ImageView
+        android:id="@+id/dateView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/dateTxt"
+        app:layout_constraintEnd_toStartOf="@+id/dateTxt"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/dateTxt"
+        app:srcCompat="@drawable/si_glyph_calendar_3" />
 
     <EditText
         android:id="@+id/dateTxt"
@@ -74,31 +85,6 @@
         app:layout_constraintStart_toStartOf="@+id/amountTxt"
         app:layout_constraintTop_toBottomOf="@+id/amountTxt" />
 
-    <Spinner
-        android:id="@+id/categorySpin"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="32dp"
-        android:layout_marginTop="24dp"
-        android:background="@color/light_gray"
-        android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.812"
-        app:layout_constraintStart_toStartOf="@+id/dateTxt"
-        app:layout_constraintTop_toBottomOf="@+id/radioGroup" />
-
-    <TextView
-        android:id="@+id/textView5"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginStart="32dp"
-        android:text="RS."
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="@+id/amountTxt"
-        app:layout_constraintEnd_toStartOf="@+id/amountTxt"
-        app:layout_constraintStart_toStartOf="parent" />
-
     <RadioGroup
         android:id="@+id/radioGroup"
         android:layout_width="0dp"
@@ -112,21 +98,50 @@
         app:layout_constraintTop_toBottomOf="@+id/dateTxt">
 
         <RadioButton
-            android:id="@+id/expenseRadioBtn"
+            android:id="@+id/outflowRadioBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Expense"
+            android:text="Outflow"
             android:textSize="20sp" />
 
         <RadioButton
-            android:id="@+id/incomeRadioBtn"
+            android:id="@+id/inflowRadioBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Income"
+            android:text="Inflow"
             android:textSize="20sp" />
     </RadioGroup>
+
+
+    <!--<Spinner-->
+    <!--android:id="@+id/categorySpin"-->
+    <!--android:layout_width="0dp"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_marginEnd="32dp"-->
+    <!--android:layout_marginTop="24dp"-->
+    <!--android:background="@color/light_gray"-->
+    <!--android:spinnerMode="dialog"-->
+    <!--android:textSize="20sp"-->
+    <!--app:layout_constraintEnd_toEndOf="parent"-->
+    <!--app:layout_constraintHorizontal_bias="0.81"-->
+    <!--app:layout_constraintStart_toStartOf="@+id/dateTxt"-->
+    <!--app:layout_constraintTop_toBottomOf="@+id/radioGroup" />-->
+
+    <ImageView
+        android:id="@+id/noteView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/noteTxt"
+        app:layout_constraintEnd_toStartOf="@+id/noteTxt"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/noteTxt"
+        app:srcCompat="@drawable/si_glyph_note" />
 
     <EditText
         android:id="@+id/noteTxt"
@@ -139,8 +154,23 @@
         android:inputType="textPersonName"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/categorySpin"
-        app:layout_constraintTop_toBottomOf="@+id/categorySpin" />
+        app:layout_constraintStart_toStartOf="@+id/categorySpinLayout"
+        app:layout_constraintTop_toBottomOf="@+id/categorySpinLayout" />
+
+    <ImageView
+        android:id="@+id/dueDateView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="@+id/dueDateTxt"
+        app:layout_constraintEnd_toStartOf="@+id/dueDateTxt"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/dueDateTxt"
+        app:srcCompat="@drawable/si_glyph_calendar_3" />
 
     <EditText
         android:id="@+id/dueDateTxt"
@@ -157,6 +187,21 @@
         app:layout_constraintStart_toStartOf="@+id/noteTxt"
         app:layout_constraintTop_toBottomOf="@+id/noteTxt" />
 
+    <ImageView
+        android:id="@+id/partnerView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="@+id/partnerTxt"
+        app:layout_constraintEnd_toStartOf="@+id/partnerTxt"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/partnerTxt"
+        app:srcCompat="@drawable/si_glyph_person_man" />
+
     <EditText
         android:id="@+id/partnerTxt"
         android:layout_width="0dp"
@@ -172,5 +217,116 @@
         app:layout_constraintStart_toStartOf="@+id/dueDateTxt"
         app:layout_constraintTop_toBottomOf="@+id/dueDateTxt" />
 
+    <ImageView
+        android:id="@+id/sourceView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="4dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="12dp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="@+id/sourceSpinnerLayout"
+        app:layout_constraintEnd_toStartOf="@+id/sourceSpinnerLayout"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/sourceSpinnerLayout"
+        app:srcCompat="@drawable/si_glyph_arrow_backward" />
+
+    <RelativeLayout
+        android:id="@+id/sourceSpinnerLayout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="32dp"
+        android:layout_marginTop="24dp"
+        android:background="@drawable/rounded_corner"
+        android:orientation="horizontal"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/dateTxt"
+        app:layout_constraintTop_toBottomOf="@+id/noteTxt">
+
+        <Spinner
+            android:id="@+id/sourceSpin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_gravity="center"
+            android:layout_marginLeft="5dp"
+            android:background="@android:color/transparent"
+            android:gravity="center"
+            android:spinnerMode="dialog"
+            android:textSize="20sp" />
+
+        <ImageView
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_gravity="center"
+            android:src="@drawable/dropdown_arrow" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/categorySpinLayout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="32dp"
+        android:layout_marginTop="24dp"
+        android:background="@drawable/rounded_corner"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/dateTxt"
+        app:layout_constraintTop_toBottomOf="@+id/radioGroup">
+
+        <Spinner
+            android:id="@+id/categorySpin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_gravity="center"
+            android:layout_marginLeft="5dp"
+            android:background="@android:color/transparent"
+            android:gravity="center"
+            android:spinnerMode="dialog"
+            android:textSize="20sp" />
+
+        <ImageView
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_gravity="center"
+            android:src="@drawable/dropdown_arrow" />
+
+    </RelativeLayout>
+
+
+    <!--<Spinner-->
+    <!--android:id="@+id/sourceSpin"-->
+    <!--android:layout_width="0dp"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_marginEnd="32dp"-->
+    <!--android:layout_marginTop="24dp"-->
+    <!--android:background="@color/light_gray"-->
+    <!--android:spinnerMode="dialog"-->
+    <!--android:textSize="20sp"-->
+    <!--app:layout_constraintEnd_toEndOf="parent"-->
+    <!--app:layout_constraintStart_toStartOf="@+id/partnerTxt"-->
+    <!--app:layout_constraintTop_toBottomOf="@+id/partnerTxt" />-->
+
+
+    <!--<include-->
+    <!--android:id="@+id/include"-->
+    <!--layout="@layout/content_transaction"-->
+    <!--android:layout_width="0dp"-->
+    <!--android:layout_height="0dp"-->
+    <!--app:layout_constraintBottom_toBottomOf="parent"-->
+    <!--app:layout_constraintEnd_toEndOf="parent"-->
+    <!--app:layout_constraintHorizontal_bias="1.0"-->
+    <!--app:layout_constraintStart_toStartOf="parent"-->
+    <!--app:layout_constraintTop_toBottomOf="@+id/appbar"-->
+    <!--app:layout_constraintVertical_bias="1.0" />-->
 
 </android.support.constraint.ConstraintLayout>

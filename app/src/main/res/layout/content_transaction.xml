@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.lahiru.cem.TransactionActivity"
+    tools:context="com.lahiru.cem.views.TransactionActivity"
     tools:showIn="@layout/activity_transaction">
 
 </android.support.constraint.ConstraintLayout>

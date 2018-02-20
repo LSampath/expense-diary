@@ -1,4 +1,4 @@
-package com.lahiru.cem;
+package com.lahiru.cem.views.home;
 
 import android.content.Context;
 import android.net.Uri;
@@ -8,6 +8,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.lahiru.cem.R;
 
 
 public class LendingsFragment extends Fragment {

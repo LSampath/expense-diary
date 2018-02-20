@@ -1,10 +1,7 @@
-package com.lahiru.cem;
+package com.lahiru.cem.views.home;
 
-import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -13,22 +10,22 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
 
-import com.lahiru.cem.adapters.TransactionAdapter;
+import com.lahiru.cem.R;
+import com.lahiru.cem.adapters.DatabaseHelper;
+import com.lahiru.cem.adapters.RecycleAdapter;
+import com.lahiru.cem.controllers.TransactionController;
+import com.lahiru.cem.models.ListItem;
 import com.lahiru.cem.models.Transaction;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 
 public class TransactionsFragment extends Fragment {
 
     private RecyclerView recyclerView;
-    private RecyclerView.Adapter adapter;
-    private List<Transaction> transactions;
+    private RecycleAdapter adapter;
+    private ArrayList<ListItem> listItems;
     private FloatingActionButton newTransactionBtn;
 
     @Override
@@ -40,26 +37,39 @@ public class TransactionsFragment extends Fragment {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        transactions = new ArrayList<>();
-
-        for(int i=0; i<10; i++) {
-            Transaction tran = new Transaction("Heading " + i, "description of the item " + i);
-            transactions.add(tran);
-            //------------------------------------------------------------------------------------------------------------------------------------
-        }
-
-        adapter = new TransactionAdapter(transactions, getActivity());
+        listItems = new ArrayList<>();
+        adapter = new RecycleAdapter(listItems, getActivity());
         recyclerView.setAdapter(adapter);
+
+        loadTransactions();
 
         newTransactionBtn = (FloatingActionButton) fragment.findViewById(R.id.newTransactionBtn);
         newTransactionBtn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent("com.lahiru.cem.TransactionActivity");
+                Intent intent = new Intent("com.lahiru.cem.views.TransactionActivity");
                 startActivity(intent);
             }
         });
 
         return fragment;
+    }
+
+    public void loadTransactions() {
+        DatabaseHelper db = new DatabaseHelper(getActivity());
+
+        listItems = new ArrayList<>();
+
+        ArrayList<String> dates = TransactionController.getTransactionDates(db);
+        for (String date: dates) {
+            listItems.add(new ListItem(ListItem.DATE_ITEM, date));
+            Log.i("TEST", date);
+            ArrayList<String> transList = TransactionController.getTransactions(db, date);
+            for (String tid: transList) {
+                listItems.add(new ListItem(ListItem.TRANSACTION_ITEM, tid));
+                Log.i("TEST", tid);
+            }
+        }
+        adapter.setListItems(listItems);
     }
 }
