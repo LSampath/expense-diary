@@ -273,6 +273,7 @@ public class TransactionActivity extends AppCompatActivity {
                 Toast.makeText(this, "Due date should be provided.", Toast.LENGTH_SHORT).show();
                 return;
             }
+            
             Date dueParsed = new SimpleDateFormat("EEE,  dd MMM yyyy").parse(dueDate);
             dueDate = new SimpleDateFormat("yyyy-MM-dd").format(dueParsed);
 
