@@ -6,10 +6,15 @@
     <string name="tab_name_3">Lendings</string>
     <string name="tab_name_4">New Tab</string>
 
-    <string name="title_activity_transaction">Add Transaction</string>
+    <string name="title_activity_transaction">Transaction</string>
     <string name="title_activity_start">Expense Diary</string>
+    <string name="title_activity_repayment">Select Source</string>
 
     <string name="save_action">Save</string>
+    <string name="remove_action">Remove</string>
 
     <string name="hello_blank_fragment">Hellow ldskfjsdkfl jsdk</string>
+
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
 </resources>

@@ -1,4 +1,4 @@
-package com.lahiru.cem.adapters;
+package com.lahiru.cem.controllers;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
@@ -17,7 +17,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String ACCOUNT_TABLE = "account";
 
     public DatabaseHelper(Context context) {
-        super(context, DB_NAME, null, 4);
+        super(context, DB_NAME, null, 7);
     }
 
     @Override

@@ -3,10 +3,7 @@ package com.lahiru.cem.controllers;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
-import android.widget.Toast;
 
-import com.lahiru.cem.adapters.DatabaseHelper;
 import com.lahiru.cem.models.Account;
 
 import java.util.ArrayList;
@@ -42,19 +39,30 @@ public class AccountController {
 
     public static Account authenticateAccount(DatabaseHelper dbHelper, String aid, String pin) {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
-        Cursor res = db.rawQuery("select * from " + DatabaseHelper.ACCOUNT_TABLE + " where aid='" +
+        Cursor res = db.rawQuery("select aid, accname, email from " + DatabaseHelper.ACCOUNT_TABLE + " where aid='" +
                 aid + "' and pin='" + pin + "'", null);
 
         if (res.moveToNext()) {
-            return new Account(res.getString(0), res.getString(1), res.getString(2), res.getString(3));
+            return new Account(res.getString(0), res.getString(1), res.getString(2), null);
         } else {
             return null;
         }
     }
 
-    public static long testMethod(DatabaseHelper dbHelper) {
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
-
-        return db.delete(DatabaseHelper.ACCOUNT_TABLE, "email!=?", new String[]{"lahirusampath.15@cse.mrt.ac.lk"} );
+    public static Account checkAccount(DatabaseHelper dbHelper, String aid, String accname) {
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        Cursor res = db.rawQuery("select aid, accname, email from " + DatabaseHelper.ACCOUNT_TABLE + " where aid='" + aid + "' " +
+                "and accname='" + accname + "'", null);
+        if (res.moveToNext()) {
+            return new Account(res.getString(0), res.getString(1), res.getString(2), null);
+        } else {
+            return null;
+        }
     }
+
+//    public static long testMethod(DatabaseHelper dbHelper) {
+//        SQLiteDatabase db = dbHelper.getWritableDatabase();
+//
+//        return db.delete(DatabaseHelper.ACCOUNT_TABLE, "email!=?", new String[]{"lahirusampath.15@cse.mrt.ac.lk"} );
+//    }
 }

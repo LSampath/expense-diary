@@ -1,10 +1,14 @@
-package com.lahiru.cem.views;
+package com.lahiru.cem.views.transaction;
 
+import android.app.Activity;
 import android.app.DatePickerDialog;
+import android.content.Intent;
 import android.os.Build;
+import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -13,17 +17,20 @@ import android.widget.AdapterView;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.RelativeLayout;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.lahiru.cem.R;
-import com.lahiru.cem.adapters.CustomSpinAdapter;
-import com.lahiru.cem.adapters.DatabaseHelper;
+import com.lahiru.cem.models.AppData;
+import com.lahiru.cem.views.adapters.CustomSpinAdapter;
+import com.lahiru.cem.controllers.DatabaseHelper;
 import com.lahiru.cem.controllers.TransactionController;
 import com.lahiru.cem.models.Transaction;
 
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -34,27 +41,25 @@ public class TransactionActivity extends AppCompatActivity {
 
     private Calendar dateCalendar = Calendar.getInstance();
     private DatePickerDialog.OnDateSetListener date;
-    private Spinner categorySpin;
     private DatePickerDialog.OnDateSetListener dueDate;
     private Calendar dueDateCalendar = Calendar.getInstance();
     private android.support.v7.widget.Toolbar toolbar;
+    private CustomSpinAdapter categoryAdapter;
 
-    private String[] outflowNameList = {
-            "Food & Beverage", "Bills & Fees", "Shopping", "Fun & Love", "Travel", "Health", "Family", "Education", "Business",
-            "Other", "Loan", "Debt Repayment"
-    };
-    private int[] outflowIconList = {
-            R.drawable.icn_food, R.drawable.icn_bills,R.drawable.icn_shopping, R.drawable.icn_love, R.drawable.icn_travel,
-            R.drawable.icn_health, R.drawable.icn_family, R.drawable.icn_education, R.drawable.icn_business,
-            R.drawable.icn_other, R.drawable.icn_loan, R.drawable.icn_replay
-    };
-    private String[] inflowNameList = {
-            "Salary", "Business", "Interest", "Other", "Debt", "Loan Collection"
-    };
-    private int[] inflowIconList = {
-            R.drawable.icn_salary, R.drawable.icn_business, R.drawable.icn_interest, R.drawable.icn_other,
-            R.drawable.icn_debt, R.drawable.icn_replay
-    };
+    private EditText amountText;
+    private Spinner categorySpin;
+    private EditText dateText;
+    private RadioGroup radioGroup;
+    private EditText partnerTxt;
+    private EditText dueDateTxt;
+    private EditText noteText;
+    private TextView sourceTxt;
+
+    private boolean newTrans;
+    private String lend_tid;
+    private DatabaseHelper db;
+    public final int REPAYMENT_RESULT_CODE = 1;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,12 +69,23 @@ public class TransactionActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        DatabaseHelper db = new DatabaseHelper(this);
+        db = new DatabaseHelper(this);
 
-        // initializing date picker elements--------------------------------------------------------
-         EditText dateText = (EditText) findViewById(R.id.dateTxt);
+        newTrans = true;
+
+        amountText = (EditText) findViewById(R.id.amountTxt);
+        dateText = (EditText) findViewById(R.id.dateTxt);
+        categorySpin = (Spinner) findViewById(R.id.categorySpin);
+        radioGroup = (RadioGroup) findViewById(R.id.radioGroup);
+        dueDateTxt = (EditText) findViewById(R.id.dueDateTxt);
+        partnerTxt = (EditText) findViewById(R.id.partnerTxt);
+        categorySpin = (Spinner) findViewById(R.id.categorySpin);
+        noteText = (EditText) findViewById(R.id.noteTxt);
+        sourceTxt = (TextView) findViewById(R.id.sourceTxt);
+
+
+        //-initializing date picker elements--------------------------------------------------------
         dateText.setFocusable(false);
-
         date = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker datePicker, int year, int month, int day) {
@@ -79,7 +95,6 @@ public class TransactionActivity extends AppCompatActivity {
                 updateDateText();
             }
         };
-
         dateText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -89,51 +104,42 @@ public class TransactionActivity extends AppCompatActivity {
         });
 
         // initializing category spinner and radio buttons -----------------------------------------
-        categorySpin = (Spinner) findViewById(R.id.categorySpin);
+        categoryAdapter=new CustomSpinAdapter(getApplicationContext(),
+                AppData.getInstance().getInflowIconList(), AppData.getInstance().getInflowNameList());
+        categorySpin.setAdapter(categoryAdapter);
 
-        CustomSpinAdapter customAdapter=new CustomSpinAdapter(getApplicationContext(), inflowIconList, inflowNameList);
-        categorySpin.setAdapter(customAdapter);
-
-        final RadioGroup radioGroup = (RadioGroup) findViewById(R.id.radioGroup);
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, int i) {
-                Spinner categorySpin = (Spinner) findViewById(R.id.categorySpin);
-                CustomSpinAdapter adapter = (CustomSpinAdapter) categorySpin.getAdapter();
 
                 String[] nameList = new String[]{};
                 int[] iconList = new int[]{};
 
                 if (i == R.id.outflowRadioBtn) {
-                    nameList = outflowNameList;
-                    iconList = outflowIconList;
+                    nameList = AppData.getInstance().getOutflowNameList();
+                    iconList = AppData.getInstance().getOutflowIconList();
                 }else if (i == R.id.inflowRadioBtn) {
-                    nameList = inflowNameList;
-                    iconList = inflowIconList;
+                    nameList = AppData.getInstance().getInflowNameList();
+                    iconList = AppData.getInstance().getInflowIconList();
                 }
-                adapter.setItems(iconList, nameList);
+                categoryAdapter.setItems(iconList, nameList);
             }
         });
         radioGroup.check(R.id.outflowRadioBtn);
 
         // set listener for category spinner -------------------------------------------------------
         categorySpin.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 String selectedCategory = null;
                 if (radioGroup.getCheckedRadioButtonId() == R.id.inflowRadioBtn) {
-                    selectedCategory = inflowNameList[i];
+                    selectedCategory = AppData.getInstance().getInflowNameList()[i];
                 }else {
-                    selectedCategory = outflowNameList[i];
+                    selectedCategory = AppData.getInstance().getOutflowNameList()[i];
                 }
 
-                EditText dueDateTxt = (EditText) findViewById(R.id.dueDateTxt);
-                EditText partnerTxt = (EditText) findViewById(R.id.partnerTxt);
                 ImageView dueDateView = (ImageView) findViewById(R.id.dueDateView);
                 ImageView partnerView = (ImageView) findViewById(R.id.partnerView);
-
-                RelativeLayout sourceSpinLayout = (RelativeLayout) findViewById(R.id.sourceSpinnerLayout);
                 ImageView sourceView = (ImageView) findViewById(R.id.sourceView);
 
                 if (selectedCategory.equals("Loan") || selectedCategory.equals("Debt")) {
@@ -148,10 +154,10 @@ public class TransactionActivity extends AppCompatActivity {
                     partnerView.setVisibility(View.INVISIBLE);
                 }
                 if (selectedCategory.equals("Loan Collection") || selectedCategory.equals("Debt Repayment")) {
-                    sourceSpinLayout.setVisibility(View.VISIBLE);
+                    sourceTxt.setVisibility(View.VISIBLE);
                     sourceView.setVisibility(View.VISIBLE);
                 } else {
-                    sourceSpinLayout.setVisibility(View.INVISIBLE);
+                    sourceTxt.setVisibility(View.INVISIBLE);
                     sourceView.setVisibility(View.INVISIBLE);
                 }
             }
@@ -161,11 +167,8 @@ public class TransactionActivity extends AppCompatActivity {
             }
         });
 
-
         //initialize due date element --------------------------------------------------------------
-        EditText dueDateTxt = (EditText) findViewById(R.id.dueDateTxt);
         dueDateTxt.setFocusable(false);
-
         dueDate = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker datePicker, int year, int month, int day) {
@@ -175,12 +178,25 @@ public class TransactionActivity extends AppCompatActivity {
                 updateDueDateText();
             }
         };
-
         dueDateTxt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 new DatePickerDialog(TransactionActivity.this, dueDate,
                         dueDateCalendar.get(Calendar.YEAR), dueDateCalendar.get(Calendar.MONTH), dueDateCalendar.get(Calendar.DAY_OF_MONTH)).show();
+            }
+        });
+
+        //---initialize source element--------------------------------------------------------------
+        sourceTxt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent("com.lahiru.cem.views.transaction.RepaymentActivity");
+                String inOut = "inflow";
+                if (radioGroup.getCheckedRadioButtonId() == R.id.outflowRadioBtn) {
+                    inOut = "outflow";
+                }
+                intent.putExtra("IN_OUT", inOut);
+                startActivityForResult(intent, REPAYMENT_RESULT_CODE);
             }
         });
 
@@ -194,28 +210,100 @@ public class TransactionActivity extends AppCompatActivity {
                 }
             });
         }
-    }
 
+        //if this is to edit detils-----------------------------------------------------------------
+        String aid = getIntent().getStringExtra("TID");
+        if (aid != null) {
+            newTrans = false;
+            Transaction tran = TransactionController.getTransactionDetails(db, aid);
+//
+//            Log.i("TEST", "Category : " + tran.getCategory());
+//            Log.i("TEST", "Due date : " + tran.getDueDate());
+//            Log.i("TEST", "InOut : " + tran.getInOut());
+//            Log.i("TEST", "Note : " + tran.getNote());
+//            Log.i("TEST", "Day : " + tran.getDay());
+//            Log.i("TEST", "Amount : " + tran.getAmount());
+//            Log.i("TEST", "TID : " + tran.getTID());
+//            Log.i("TEST", "Partner : " + tran.getPartner());
+//            Log.i("TEST", "Lend TID : " + tran.getLendTID());
+
+            DateFormat to   = new SimpleDateFormat("EEE,  dd MMM yyyy");
+            DateFormat from = new SimpleDateFormat("yyyy-MM-dd");
+
+            amountText.setText(tran.getAmount());
+            noteText.setText(tran.getNote());
+            try {
+                dateText.setText(to.format(from.parse(tran.getDate())));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            if (tran.getInOut().equals("inflow")) {
+                ((RadioButton) findViewById(R.id.inflowRadioBtn)).setChecked(true);
+                categoryAdapter.setItems(AppData.getInstance().getInflowIconList(), AppData.getInstance().getInflowNameList());
+            } else {
+                ((RadioButton) findViewById(R.id.outflowRadioBtn)).setChecked(true);
+                categoryAdapter.setItems(AppData.getInstance().getOutflowIconList(), AppData.getInstance().getOutflowNameList());
+            }
+            categorySpin.setSelection(categoryAdapter.getItemId(tran.getCategory()));
+
+            if (tran.getCategory().equals("Loan") || tran.getCategory().equals("Debt")) {
+                partnerTxt.setText(tran.getPartner());
+                try {
+                    dueDateTxt.setText(to.format(from.parse(tran.getDueDate())));
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+            } else if (tran.getCategory().equals("Loan Collection") || tran.getCategory().equals("Debt Repayment")) {
+                Transaction sourceLending = TransactionController.getTransactionDetails(db, tran.getLendTID());
+                lend_tid =  tran.getLendTID();
+                String text = "Rs. " + sourceLending.getAmount() + " (" + sourceLending.getCategory() + ")";
+                if (! sourceLending.getPartner().equals("")) {
+                    text += " With, " + sourceLending.getPartner();
+                }
+                sourceTxt.setText(text);
+            }
+        }
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_transaction, menu);
+
+        MenuItem removeItem = menu.findItem(R.id.action_remove);
+        if (!newTrans) {
+            removeItem.setVisible(true);
+        }
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.actionSave) {
+        if (item.getItemId() == R.id.action_save) {
             try {
-                insertTransactionToDB();
+                saveTransaction();
             } catch (ParseException e) {
                 e.printStackTrace();
             }
+        } else if (item.getItemId() == R.id.action_remove) {
+            removeTransaction();
         }
         return true;
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REPAYMENT_RESULT_CODE && resultCode == Activity.RESULT_OK) {
+            lend_tid =  data.getStringExtra("LEND_TID");
+            Transaction sourceLending = TransactionController.getTransactionDetails(db, lend_tid);
+            String text = "Rs. " + sourceLending.getAmount() + " (" + sourceLending.getCategory() + ")";
+            if (! sourceLending.getPartner().equals("")) {
+                text += " With, " + sourceLending.getPartner();
+            }
+            sourceTxt.setText(text);
+        }
+    }
 
     private void updateDateText() {
         String myFormat = "EEE,  dd MMM yyyy";
@@ -232,8 +320,7 @@ public class TransactionActivity extends AppCompatActivity {
     }
 
 
-    private void insertTransactionToDB() throws ParseException {
-        EditText amountText = (EditText) findViewById(R.id.amountTxt);
+    private void saveTransaction() throws ParseException {
         String amount = amountText.getText().toString();
         if (amount.equals("")) {
             Toast.makeText(this, "Amount should be provided.", Toast.LENGTH_SHORT).show();
@@ -241,31 +328,27 @@ public class TransactionActivity extends AppCompatActivity {
         }
         amount = String.format("%.2f", Double.parseDouble(amount));
 
-        EditText dateText = (EditText) findViewById(R.id.dateTxt);
         String date = dateText.getText().toString();
         if (date.equals("")) {
             Toast.makeText(this, "DayDate should be provided.", Toast.LENGTH_SHORT).show();
             return;
         }
         Date parsed = new SimpleDateFormat("EEE,  dd MMM yyyy").parse(date);
+
         String day = new SimpleDateFormat("EEE").format(parsed);
         date = new SimpleDateFormat("yyyy-MM-dd").format(parsed);
 
-        RadioGroup inOutRadio = (RadioGroup) findViewById(R.id.radioGroup);
-        int selected = inOutRadio.getCheckedRadioButtonId();
+        int selected = radioGroup.getCheckedRadioButtonId();
         String inOut = "inflow";
         if (selected == R.id.outflowRadioBtn) {
             inOut = "outflow";
         }
-
-        Spinner categorySpin = (Spinner) findViewById(R.id.categorySpin);
         String category = (String) categorySpin.getAdapter().getItem(categorySpin.getSelectedItemPosition());
-
-        EditText noteText = (EditText) findViewById(R.id.noteTxt);
         String note = noteText.getText().toString();
 
         Transaction transaction = new Transaction(null, amount, date, day, inOut, category, note);
 
+        //for Loans and Debts, taking due date and partner------------------------------------------
         if (category.equals("Loan") || category.equals("Debt")) {
             EditText dueDateText = (EditText) findViewById(R.id.dueDateTxt);
             String dueDate = dueDateText.getText().toString();
@@ -273,7 +356,6 @@ public class TransactionActivity extends AppCompatActivity {
                 Toast.makeText(this, "Due date should be provided.", Toast.LENGTH_SHORT).show();
                 return;
             }
-            
             Date dueParsed = new SimpleDateFormat("EEE,  dd MMM yyyy").parse(dueDate);
             dueDate = new SimpleDateFormat("yyyy-MM-dd").format(dueParsed);
 
@@ -282,14 +364,50 @@ public class TransactionActivity extends AppCompatActivity {
 
             transaction.setLendingDetails(partner, dueDate);
         }
+
+        //for repayments and collections, selecting source transactions-----------------------------
         if (category.equals("Debt Repayment") || category.equals("Loan Collection")) {
-            // load list of loans
+            transaction.setRepaymentDetails(lend_tid);
         }
 
-        DatabaseHelper db = new DatabaseHelper(this);
-        long i = TransactionController.insertTransaction(db, transaction);
-
-        Toast.makeText(this, i+"", Toast.LENGTH_SHORT).show();
+        long result = -1;
+        if (newTrans) {
+            result = insertTransaction(transaction);
+        } else {
+            result = updateTransaction(transaction);
+        }
+        if (result != -1) {
+            finish();
+            Toast.makeText(this, "Transaction recorded. + " + result, Toast.LENGTH_SHORT).show();
+        }else {
+            Toast.makeText(this, "Something is wrong!", Toast.LENGTH_SHORT).show();
+        }
     }
+
+    private long insertTransaction(Transaction transaction) {
+        DatabaseHelper db = new DatabaseHelper(this);
+        return TransactionController.insertTransaction(db, transaction);
+    }
+
+    private long updateTransaction(Transaction transaction) {
+        DatabaseHelper db = new DatabaseHelper(this);
+        String tid = getIntent().getStringExtra("TID");
+        transaction.setTid(tid);
+        Toast.makeText(this, "Going to update", Toast.LENGTH_SHORT).show();
+        return TransactionController.updateTransaction(db, transaction);
+    }
+
+    public void removeTransaction() {
+        String tid = getIntent().getStringExtra("TID");
+        DatabaseHelper db = new DatabaseHelper(this);
+        int result = TransactionController.deleteTransaction(db, tid);
+        if (result == 1) {
+            finish();
+            Toast.makeText(this, "Transaction removed.", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(this, "Something is wrong.", Toast.LENGTH_SHORT).show();
+        }
+    }
+
 
 }

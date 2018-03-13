@@ -5,7 +5,7 @@
     android:id="@+id/transaction_content"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.lahiru.cem.views.TransactionActivity">
+    tools:context="com.lahiru.cem.views.transaction.TransactionActivity">
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/appbar"
@@ -31,16 +31,14 @@
         android:id="@+id/amountView"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="12dp"
         app:layout_constraintBottom_toBottomOf="@+id/amountTxt"
         app:layout_constraintEnd_toStartOf="@+id/amountTxt"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/amountTxt"
         app:layout_constraintVertical_bias="0.481"
-        app:srcCompat="@drawable/si_glyph_money" />
+        app:srcCompat="@drawable/icn_tran_amount" />
 
     <EditText
         android:id="@+id/amountTxt"
@@ -50,6 +48,8 @@
         android:layout_marginTop="24dp"
         android:layout_weight="1"
         android:ems="10"
+        android:background="@drawable/rounded_corner"
+        android:padding="10dp"
         android:hint="Amount"
         android:inputType="numberDecimal"
         android:textSize="20sp"
@@ -60,26 +60,26 @@
         android:id="@+id/dateView"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
         app:layout_constraintBottom_toBottomOf="@+id/dateTxt"
         app:layout_constraintEnd_toStartOf="@+id/dateTxt"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/dateTxt"
-        app:srcCompat="@drawable/si_glyph_calendar_3" />
+        app:srcCompat="@drawable/icn_tran_date" />
 
     <EditText
         android:id="@+id/dateTxt"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="32dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/rounded_corner"
         android:editable="false"
         android:ems="10"
         android:hint="Date"
         android:inputType="date"
+        android:padding="10dp"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/amountTxt"
@@ -90,7 +90,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="32dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="16dp"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -129,150 +129,12 @@
     <!--app:layout_constraintStart_toStartOf="@+id/dateTxt"-->
     <!--app:layout_constraintTop_toBottomOf="@+id/radioGroup" />-->
 
-    <ImageView
-        android:id="@+id/noteView"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintBottom_toBottomOf="@+id/noteTxt"
-        app:layout_constraintEnd_toStartOf="@+id/noteTxt"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/noteTxt"
-        app:srcCompat="@drawable/si_glyph_note" />
-
-    <EditText
-        android:id="@+id/noteTxt"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="32dp"
-        android:layout_marginTop="24dp"
-        android:ems="10"
-        android:hint="Note"
-        android:inputType="textPersonName"
-        android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/categorySpinLayout"
-        app:layout_constraintTop_toBottomOf="@+id/categorySpinLayout" />
-
-    <ImageView
-        android:id="@+id/dueDateView"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:visibility="invisible"
-        app:layout_constraintBottom_toBottomOf="@+id/dueDateTxt"
-        app:layout_constraintEnd_toStartOf="@+id/dueDateTxt"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/dueDateTxt"
-        app:srcCompat="@drawable/si_glyph_calendar_3" />
-
-    <EditText
-        android:id="@+id/dueDateTxt"
-        android:layout_width="0dp"
-        android:layout_height="44dp"
-        android:layout_marginEnd="32dp"
-        android:layout_marginTop="24dp"
-        android:ems="10"
-        android:hint="Due date"
-        android:inputType="date"
-        android:textSize="20sp"
-        android:visibility="invisible"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/noteTxt"
-        app:layout_constraintTop_toBottomOf="@+id/noteTxt" />
-
-    <ImageView
-        android:id="@+id/partnerView"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:visibility="invisible"
-        app:layout_constraintBottom_toBottomOf="@+id/partnerTxt"
-        app:layout_constraintEnd_toStartOf="@+id/partnerTxt"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/partnerTxt"
-        app:srcCompat="@drawable/si_glyph_person_man" />
-
-    <EditText
-        android:id="@+id/partnerTxt"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="32dp"
-        android:layout_marginTop="24dp"
-        android:ems="10"
-        android:hint="Partner"
-        android:inputType="textPersonName"
-        android:textSize="20sp"
-        android:visibility="invisible"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/dueDateTxt"
-        app:layout_constraintTop_toBottomOf="@+id/dueDateTxt" />
-
-    <ImageView
-        android:id="@+id/sourceView"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginBottom="4dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="12dp"
-        android:visibility="invisible"
-        app:layout_constraintBottom_toBottomOf="@+id/sourceSpinnerLayout"
-        app:layout_constraintEnd_toStartOf="@+id/sourceSpinnerLayout"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/sourceSpinnerLayout"
-        app:srcCompat="@drawable/si_glyph_arrow_backward" />
-
-    <RelativeLayout
-        android:id="@+id/sourceSpinnerLayout"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="32dp"
-        android:layout_marginTop="24dp"
-        android:background="@drawable/rounded_corner"
-        android:orientation="horizontal"
-        android:visibility="invisible"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/dateTxt"
-        app:layout_constraintTop_toBottomOf="@+id/noteTxt">
-
-        <Spinner
-            android:id="@+id/sourceSpin"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_gravity="center"
-            android:layout_marginLeft="5dp"
-            android:background="@android:color/transparent"
-            android:gravity="center"
-            android:spinnerMode="dialog"
-            android:textSize="20sp" />
-
-        <ImageView
-            android:layout_width="45dp"
-            android:layout_height="45dp"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_gravity="center"
-            android:src="@drawable/dropdown_arrow" />
-
-    </RelativeLayout>
-
     <RelativeLayout
         android:id="@+id/categorySpinLayout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="32dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="16dp"
         android:background="@drawable/rounded_corner"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
@@ -301,6 +163,161 @@
             android:src="@drawable/dropdown_arrow" />
 
     </RelativeLayout>
+
+    <ImageView
+        android:id="@+id/noteView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="16dp"
+        app:layout_constraintBottom_toBottomOf="@+id/noteTxt"
+        app:layout_constraintEnd_toStartOf="@+id/noteTxt"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/noteTxt"
+        app:srcCompat="@drawable/icn_tran_note" />
+
+    <EditText
+        android:id="@+id/noteTxt"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="32dp"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/rounded_corner"
+        android:ems="10"
+        android:hint="Note"
+        android:inputType="textPersonName"
+        android:padding="10dp"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/categorySpinLayout"
+        app:layout_constraintTop_toBottomOf="@+id/categorySpinLayout" />
+
+    <ImageView
+        android:id="@+id/dueDateView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="16dp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="@+id/dueDateTxt"
+        app:layout_constraintEnd_toStartOf="@+id/dueDateTxt"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/dueDateTxt"
+        app:srcCompat="@drawable/icn_tran_due" />
+
+    <EditText
+        android:id="@+id/dueDateTxt"
+        android:layout_width="0dp"
+        android:layout_height="44dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/rounded_corner"
+        android:ems="10"
+        android:hint="Due date"
+        android:editable="false"
+        android:inputType="date"
+        android:padding="10dp"
+        android:textSize="20sp"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/noteTxt"
+        app:layout_constraintTop_toBottomOf="@+id/noteTxt" />
+
+    <ImageView
+        android:id="@+id/partnerView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="16dp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="@+id/partnerTxt"
+        app:layout_constraintEnd_toStartOf="@+id/partnerTxt"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/partnerTxt"
+        app:srcCompat="@drawable/icn_tran_partner" />
+
+    <EditText
+        android:id="@+id/partnerTxt"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="32dp"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/rounded_corner"
+        android:ems="10"
+        android:hint="Partner"
+        android:inputType="textPersonName"
+        android:padding="10dp"
+        android:textSize="20sp"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/dueDateTxt"
+        app:layout_constraintTop_toBottomOf="@+id/dueDateTxt" />
+
+    <ImageView
+        android:id="@+id/sourceView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="20dp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="@+id/sourceTxt"
+        app:layout_constraintEnd_toStartOf="@+id/sourceTxt"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/sourceTxt"
+        app:srcCompat="@drawable/icn_tran_source" />
+
+    <TextView
+        android:id="@+id/sourceTxt"
+        android:layout_width="0dp"
+        android:layout_height="44dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/rounded_corner"
+        android:ems="10"
+        android:hint="Source"
+        android:textColor="@color/black"
+        android:padding="10dp"
+        android:textSize="20sp"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/noteTxt"
+        app:layout_constraintTop_toBottomOf="@+id/noteTxt" />
+
+
+    <!--<RelativeLayout-->
+        <!--android:id="@+id/sourceSpinnerLayout"-->
+        <!--android:layout_width="0dp"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginEnd="32dp"-->
+        <!--android:layout_marginTop="16dp"-->
+        <!--android:background="@drawable/rounded_corner"-->
+        <!--android:orientation="horizontal"-->
+        <!--android:visibility="invisible"-->
+        <!--app:layout_constraintEnd_toEndOf="parent"-->
+        <!--app:layout_constraintStart_toStartOf="@+id/dateTxt"-->
+        <!--app:layout_constraintTop_toBottomOf="@+id/noteTxt">-->
+
+        <!--<Spinner-->
+            <!--android:id="@+id/sourceSpin"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_centerVertical="true"-->
+            <!--android:layout_gravity="center"-->
+            <!--android:layout_marginLeft="5dp"-->
+            <!--android:background="@android:color/transparent"-->
+            <!--android:gravity="center"-->
+            <!--android:spinnerMode="dialog"-->
+            <!--android:textSize="20sp" />-->
+
+        <!--<ImageView-->
+            <!--android:layout_width="45dp"-->
+            <!--android:layout_height="45dp"-->
+            <!--android:layout_alignParentRight="true"-->
+            <!--android:layout_centerVertical="true"-->
+            <!--android:layout_gravity="center"-->
+            <!--android:src="@drawable/dropdown_arrow" />-->
+
+    <!--</RelativeLayout>-->
 
 
     <!--<Spinner-->

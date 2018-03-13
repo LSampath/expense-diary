@@ -12,9 +12,10 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.lahiru.cem.R;
-import com.lahiru.cem.adapters.DatabaseHelper;
+import com.lahiru.cem.controllers.DatabaseHelper;
 import com.lahiru.cem.controllers.AccountController;
 import com.lahiru.cem.models.Account;
+import com.lahiru.cem.models.AppData;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -22,7 +23,6 @@ import java.util.regex.Pattern;
 public class NewAccountFragment extends Fragment {
 
     private DatabaseHelper dbHelper;
-    private StartActivity activity;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -33,8 +33,7 @@ public class NewAccountFragment extends Fragment {
         }
         dbHelper = new DatabaseHelper(getActivity());
 
-        activity = (StartActivity) NewAccountFragment.this.getActivity();
-
+        //------------initialize view components----------------------------------------------------
         Button newAccBtn = fragment.findViewById(R.id.btn_submit);
         newAccBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -107,7 +106,6 @@ public class NewAccountFragment extends Fragment {
                 }
             }
         });
-
         return fragment;
     }
 
@@ -172,12 +170,11 @@ public class NewAccountFragment extends Fragment {
             Toast.makeText(getActivity(), "Account name already exists.", Toast.LENGTH_SHORT).show();
             return;
         }else {
-            Account account = new Account(String.valueOf(result), accName, email, pin);
-            activity.setCurAccount(account);
+            AppData.getInstance().setAccount(new Account(String.valueOf(result), accName, email, null));
 
             Intent intent = new Intent("com.lahiru.cem.views.home.HomeActivity");
             startActivity(intent);
-            activity.finish();
+            getActivity().finish();
         }
     }
 

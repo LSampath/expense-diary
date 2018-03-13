@@ -2,11 +2,19 @@
 <menu xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.lahiru.cem.views.TransactionActivity">
+    tools:context="com.lahiru.cem.views.transaction.TransactionActivity">
 
     <item
-        android:id="@+id/actionSave"
+        android:id="@+id/action_save"
         android:title="@string/save_action"
+        android:orderInCategory="100"
+        app:showAsAction="always">
+    </item>
+
+    <item
+        android:id="@+id/action_remove"
+        android:title="@string/remove_action"
+        android:visible="false"
         android:orderInCategory="100"
         app:showAsAction="always">
     </item>

@@ -15,7 +15,7 @@ public class Transaction {
     private String note;
     private String dueDate;
     private String partner;
-    private String source;
+    private String lend_tid;
 
     public Transaction(String tid, String amount, String date, String day, String inOut, String category, String note) {
         this.amount = amount;
@@ -32,8 +32,8 @@ public class Transaction {
         this.dueDate = dueDate;
     }
 
-    public void setRepaymentDetail(String source) {
-        this.source = source;
+    public void setRepaymentDetails(String lend_tid) {
+        this.lend_tid = lend_tid;
     }
 
     public String getTID() {
@@ -72,7 +72,11 @@ public class Transaction {
         return partner;
     }
 
-    public String getSource() {
-        return source;
+    public String getLendTID() {
+        return lend_tid;
+    }
+
+    public void setTid(String tid) {
+        this.tid = tid;
     }
 }

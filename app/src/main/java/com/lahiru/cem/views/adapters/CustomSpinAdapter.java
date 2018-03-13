@@ -1,4 +1,4 @@
-package com.lahiru.cem.adapters;
+package com.lahiru.cem.views.adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -58,5 +58,14 @@ public class CustomSpinAdapter extends BaseAdapter {
         this.iconList = iconList;
         this.nameList = nameList;
         notifyDataSetChanged();
+    }
+
+    public int getItemId(String itemName) {
+        for (int i=0; i<nameList.length; i++) {
+            if (itemName.equals(nameList[i])) {
+                return i;
+            }
+        }
+        return -1;
     }
 }

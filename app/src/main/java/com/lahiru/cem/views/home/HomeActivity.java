@@ -9,12 +9,12 @@ import android.view.Menu;
 import android.view.MenuInflater;
 
 import com.lahiru.cem.R;
-import com.lahiru.cem.adapters.SectionPagerAdapter;
+import com.lahiru.cem.views.adapters.SectionPagerAdapter;
 
 public class HomeActivity extends AppCompatActivity {
 
-    private SectionPagerAdapter mSectionPagerAdapter;
     private ViewPager mViewPager;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,14 +24,13 @@ public class HomeActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        mSectionPagerAdapter = new SectionPagerAdapter(getSupportFragmentManager());
+        new SectionPagerAdapter(getSupportFragmentManager());
 
         mViewPager = (ViewPager) findViewById(R.id.container);
         setupViewPager(mViewPager);
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
-
 
     }
 
@@ -46,9 +45,7 @@ public class HomeActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_home, menu);
-
         return super.onCreateOptionsMenu(menu);
     }
-
 }
 

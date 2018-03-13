@@ -1,4 +1,4 @@
-package com.lahiru.cem.adapters;
+package com.lahiru.cem.views.adapters;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;

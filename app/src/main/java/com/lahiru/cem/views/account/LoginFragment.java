@@ -17,9 +17,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.lahiru.cem.R;
-import com.lahiru.cem.adapters.DatabaseHelper;
+import com.lahiru.cem.controllers.DatabaseHelper;
 import com.lahiru.cem.controllers.AccountController;
 import com.lahiru.cem.models.Account;
+import com.lahiru.cem.models.AppData;
 
 public class LoginFragment extends Fragment {
 
@@ -34,10 +35,10 @@ public class LoginFragment extends Fragment {
             container.removeAllViews();
         }
 
-        dbHelper = new DatabaseHelper(getActivity());
-
         final StartActivity activity = (StartActivity) LoginFragment.this.getActivity();
-        final Account curAccount = activity.getCurAccount();
+        final Account curAccount = AppData.getInstance().getAccount();
+
+        dbHelper = new DatabaseHelper(activity);
 
         TextView accNameTxtView = fragment.findViewById(R.id.tv_pin);
         accNameTxtView.setText(curAccount.getAccountName());
@@ -67,26 +68,22 @@ public class LoginFragment extends Fragment {
                 String pin = pinEdtTxt.getText().toString();
                 if (pin.length() == 5) {
                     Account account = AccountController.authenticateAccount(dbHelper, curAccount.getAid(), pin);
-
                     if (account != null) {
-                        activity.setCurAccount(account);
+                        AppData.getInstance().setAccount(account);                                  // set account details globally
 
                         SharedPreferences accPreferences = activity.getSharedPreferences("ACCOUNT_PREFERENCES", Context.MODE_PRIVATE);
                         SharedPreferences.Editor editor = accPreferences.edit();
                         if (isRemember) {
-                            editor.putString("ACC_NAME", curAccount.getAccountName());
                             editor.putString("AID", curAccount.getAid());
+                            editor.putString("ACC_NAME", curAccount.getAccountName());
                         } else {
-                            editor.remove("ACC_NAME");
                             editor.remove("AID");
+                            editor.remove("ACC_NAME");
                         }
                         editor.apply();
 
                         Intent intent = new Intent("com.lahiru.cem.views.home.HomeActivity");
-                        intent.putExtra("ACC_NAME", curAccount.getAccountName());
-                        intent.putExtra("AID", curAccount.getAid());
                         startActivity(intent);
-
                         activity.finish();
                     } else {
                         Toast.makeText(getActivity(), "Wrong PIN", Toast.LENGTH_SHORT).show();

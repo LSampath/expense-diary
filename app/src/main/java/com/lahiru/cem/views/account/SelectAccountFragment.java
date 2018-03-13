@@ -1,7 +1,5 @@
 package com.lahiru.cem.views.account;
 
-import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.view.LayoutInflater;
@@ -11,12 +9,12 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.lahiru.cem.R;
-import com.lahiru.cem.adapters.DatabaseHelper;
+import com.lahiru.cem.controllers.DatabaseHelper;
 import com.lahiru.cem.controllers.AccountController;
 import com.lahiru.cem.models.Account;
+import com.lahiru.cem.models.AppData;
 
 import java.util.ArrayList;
 
@@ -34,7 +32,7 @@ public class SelectAccountFragment extends Fragment {
         }
         dbHelper = new DatabaseHelper(getActivity());
 
-        //---------------make new account button listener
+        //---------------make new account button listener-------------------------------------------
         Button newAccountBtn = fragment.findViewById(R.id.btn_new_acc);
         newAccountBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -59,11 +57,11 @@ public class SelectAccountFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 String accountName = accounts.get(i)[1];
-                String aid = accounts.get(1)[0];
+                String aid = accounts.get(i)[0];
+
+                AppData.getInstance().setAccount(new Account(aid, accountName, null, null));
 
                 StartActivity activity = (StartActivity) SelectAccountFragment.this.getActivity();
-                activity.setCurAccount(new Account(aid, accountName, null, null));
-
                 activity.changeFragment(R.layout.fragment_login);
             }
         });
