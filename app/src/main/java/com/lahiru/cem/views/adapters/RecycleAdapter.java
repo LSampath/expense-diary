@@ -70,8 +70,10 @@ public class RecycleAdapter extends RecyclerView.Adapter<RecycleAdapter.ViewHold
             int icon = 0;
             if (trans.getInOut().equals("inflow")) {
                 icon = AppData.getInstance().getInflowIcon(trans.getCategory());
+                holder.headingText.setTextColor(context.getResources().getColor(R.color.inflow_color));
             } else {
                 icon = AppData.getInstance().getOutflowIcon(trans.getCategory());
+                holder.headingText.setTextColor(context.getResources().getColor(R.color.outflow_color));
             }
             holder.categoryIcon.setImageResource(icon);
 
@@ -123,15 +125,17 @@ public class RecycleAdapter extends RecyclerView.Adapter<RecycleAdapter.ViewHold
             int icon = 0;
             if (trans.getInOut().equals("inflow")) {
                 icon = AppData.getInstance().getInflowIcon(trans.getCategory());
+                holder.headingText.setTextColor(context.getResources().getColor(R.color.inflow_color));
             } else {
                 icon = AppData.getInstance().getOutflowIcon(trans.getCategory());
+                holder.headingText.setTextColor(context.getResources().getColor(R.color.outflow_color));
             }
             holder.categoryIcon.setImageResource(icon);
             holder.headingText.setText("Rs. " + trans.getAmount());
             holder.descriptionText.setText(trans.getNote());
-            Date dueParsed = null;
             try {
-                dueParsed = new SimpleDateFormat("yyyy-MM-dd").parse(trans.getDueDate());
+                Log.i("TEST", ""+trans.getDueDate());
+                Date dueParsed = new SimpleDateFormat("yyyy-MM-dd").parse(trans.getDueDate());
                 String dueDate = new SimpleDateFormat("dd MMM yyyy").format(dueParsed);
                 holder.factBottomText.setText("Due " + dueDate);
                 if (trans.getPartner().equals("")) {

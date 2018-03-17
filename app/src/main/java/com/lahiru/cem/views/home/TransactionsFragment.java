@@ -32,7 +32,6 @@ public class TransactionsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View fragment = inflater.inflate(R.layout.fragment_transactions, container, false);
-
         activity = (HomeActivity) getActivity();
 
         recyclerView = fragment.findViewById(R.id.recyclerView);

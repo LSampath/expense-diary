@@ -4,8 +4,11 @@
     <color name="colorPrimaryDark">#500000</color>
     <color name="colorAccent">#a49c0000</color>
     <color name="gray">#aaaaaa</color>
-    <color name="light_gray">#dddddd</color>
+    <color name="light_gray">#e1e1e1</color>
     <color name="lighter_gray">#eee</color>
     <color name="black_overlay">#66000000</color>
     <color name="black">#000000</color>
+    <color name="outflow_color">#ff4646</color>
+    <color name="inflow_color">#4646ff</color>
+
 </resources>

@@ -17,7 +17,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String ACCOUNT_TABLE = "account";
 
     public DatabaseHelper(Context context) {
-        super(context, DB_NAME, null, 7);
+        super(context, DB_NAME, null, 8);
     }
 
     @Override

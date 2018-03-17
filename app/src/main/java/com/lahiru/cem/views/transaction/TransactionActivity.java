@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Build;
-import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -76,7 +75,7 @@ public class TransactionActivity extends AppCompatActivity {
         amountText = (EditText) findViewById(R.id.amountTxt);
         dateText = (EditText) findViewById(R.id.dateTxt);
         categorySpin = (Spinner) findViewById(R.id.categorySpin);
-        radioGroup = (RadioGroup) findViewById(R.id.radioGroup);
+        radioGroup = (RadioGroup) findViewById(R.id.radio_group_type);
         dueDateTxt = (EditText) findViewById(R.id.dueDateTxt);
         partnerTxt = (EditText) findViewById(R.id.partnerTxt);
         categorySpin = (Spinner) findViewById(R.id.categorySpin);
@@ -104,14 +103,13 @@ public class TransactionActivity extends AppCompatActivity {
         });
 
         // initializing category spinner and radio buttons -----------------------------------------
-        categoryAdapter=new CustomSpinAdapter(getApplicationContext(),
+        categoryAdapter=new CustomSpinAdapter(this,
                 AppData.getInstance().getInflowIconList(), AppData.getInstance().getInflowNameList());
         categorySpin.setAdapter(categoryAdapter);
 
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, int i) {
-
                 String[] nameList = new String[]{};
                 int[] iconList = new int[]{};
 
@@ -131,7 +129,7 @@ public class TransactionActivity extends AppCompatActivity {
         categorySpin.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                String selectedCategory = null;
+                String selectedCategory;
                 if (radioGroup.getCheckedRadioButtonId() == R.id.inflowRadioBtn) {
                     selectedCategory = AppData.getInstance().getInflowNameList()[i];
                 }else {
@@ -191,12 +189,14 @@ public class TransactionActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent("com.lahiru.cem.views.transaction.RepaymentActivity");
-                String inOut = "inflow";
+                String inOut = "outflow";
                 if (radioGroup.getCheckedRadioButtonId() == R.id.outflowRadioBtn) {
-                    inOut = "outflow";
+                    inOut = "inflow";
                 }
+                // this is a special case where source transactions are negative inOut of the repayment transaction
                 intent.putExtra("IN_OUT", inOut);
                 startActivityForResult(intent, REPAYMENT_RESULT_CODE);
+                Log.i("TEST", "activity started");
             }
         });
 
@@ -211,21 +211,11 @@ public class TransactionActivity extends AppCompatActivity {
             });
         }
 
-        //if this is to edit detils-----------------------------------------------------------------
+        //if this is to edit details-----------------------------------------------------------------
         String aid = getIntent().getStringExtra("TID");
         if (aid != null) {
             newTrans = false;
             Transaction tran = TransactionController.getTransactionDetails(db, aid);
-//
-//            Log.i("TEST", "Category : " + tran.getCategory());
-//            Log.i("TEST", "Due date : " + tran.getDueDate());
-//            Log.i("TEST", "InOut : " + tran.getInOut());
-//            Log.i("TEST", "Note : " + tran.getNote());
-//            Log.i("TEST", "Day : " + tran.getDay());
-//            Log.i("TEST", "Amount : " + tran.getAmount());
-//            Log.i("TEST", "TID : " + tran.getTID());
-//            Log.i("TEST", "Partner : " + tran.getPartner());
-//            Log.i("TEST", "Lend TID : " + tran.getLendTID());
 
             DateFormat to   = new SimpleDateFormat("EEE,  dd MMM yyyy");
             DateFormat from = new SimpleDateFormat("yyyy-MM-dd");

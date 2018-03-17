@@ -1,26 +1,19 @@
-package com.lahiru.cem;
-
-import android.content.Context;
-import android.support.test.InstrumentationRegistry;
-import android.support.test.runner.AndroidJUnit4;
-
-import org.junit.Test;
-import org.junit.runner.RunWith;
-
-import static org.junit.Assert.*;
-
-/**
- * Instrumented test, which will execute on an Android device.
- *
- * @see <a href="http://d.android.com/tools/testing">Testing documentation</a>
- */
-@RunWith(AndroidJUnit4.class)
-public class ExampleInstrumentedTest {
-    @Test
-    public void useAppContext() throws Exception {
-        // Context of the app under test.
-        Context appContext = InstrumentationRegistry.getTargetContext();
-
-        assertEquals("com.lahiru.cem", appContext.getPackageName());
-    }
-}
+//package com.lahiru.cem;
+//
+//import org.junit.Test;
+//import org.junit.runner.RunWith;
+//import org.robolectric.RobolectricTestRunner;
+//
+//@RunWith(RobolectricTestRunner.class)
+//public class WelcomeActivityTest {
+//
+//    @Test
+//    public void clickingLogin_shouldStartLoginActivity() {
+////        WelcomeActivity activity = Robolectric.setupActivity(WelcomeActivity.class);
+////        activity.findViewById(R.id.login).performClick();
+////
+////        Intent expectedIntent = new Intent(activity, LoginActivity.class);
+////        Intent actual = ShadowApplication.getInstance().getNextStartedActivity();
+////        assertEquals(expectedIntent.getComponent(), actual.getComponent());
+//    }
+//}

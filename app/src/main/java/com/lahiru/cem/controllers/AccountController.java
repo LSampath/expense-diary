@@ -14,15 +14,14 @@ import java.util.ArrayList;
 
 public class AccountController {
 
-
     public static long insertAccount(DatabaseHelper dbHelper, Account acc) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put("accname", acc.getAccountName());
         values.put("email", acc.getEmail());
         values.put("pin", acc.getPin());
-        long result = db.insert(DatabaseHelper.ACCOUNT_TABLE, null, values);
 
+        long result = db.insert(DatabaseHelper.ACCOUNT_TABLE, null, values);
         return  result;
     }
 
