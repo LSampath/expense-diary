@@ -170,6 +170,7 @@ public class NewAccountFragment extends Fragment {
             Toast.makeText(getActivity(), "Account name already exists.", Toast.LENGTH_SHORT).show();
             return;
         }else {
+            Toast.makeText(getActivity(), "AID : " + result, Toast.LENGTH_SHORT).show();
             AppData.getInstance().setAccount(new Account(String.valueOf(result), accName, email, null));
 
             Intent intent = new Intent("com.lahiru.cem.views.home.HomeActivity");

@@ -117,8 +117,10 @@ public class TransactionController {
     }
 
     public static ArrayList<String> getTransactionDates(DatabaseHelper dbHelper) {
+        String aid = AppData.getInstance().getAccount().getAid();
         SQLiteDatabase db = dbHelper.getReadableDatabase();
-        Cursor res = db.rawQuery("select distinct date from " + DatabaseHelper.TRANSACTION_TABLE + " order by date", null);
+        Cursor res = db.rawQuery("select distinct date from " + DatabaseHelper.TRANSACTION_TABLE +
+                " where aid='" + aid + "' order by date", null);
         ArrayList<String> dateList = new ArrayList<>();
         while (res.moveToNext()) {
             dateList.add(res.getString(0));

@@ -1,7 +1,7 @@
 package com.lahiru.cem;
 
-import android.support.test.filters.LargeTest;
-import android.support.test.runner.AndroidJUnit4;
+//import android.support.test.filters.LargeTest;
+//import android.support.test.runner.AndroidJUnit4;
 
 import org.junit.Rule;
 import org.junit.Test;

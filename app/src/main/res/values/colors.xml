@@ -3,12 +3,28 @@
     <color name="colorPrimary">#780000</color>
     <color name="colorPrimaryDark">#500000</color>
     <color name="colorAccent">#a49c0000</color>
+
     <color name="gray">#aaaaaa</color>
     <color name="light_gray">#e1e1e1</color>
     <color name="lighter_gray">#eee</color>
     <color name="black_overlay">#66000000</color>
     <color name="black">#000000</color>
-    <color name="outflow_color">#ff4646</color>
-    <color name="inflow_color">#4646ff</color>
+
+    <color name="outflow_color">#960000</color>
+    <color name="inflow_color">#000096</color>
+
+    <color name="c1">#FF7400</color>
+    <color name="c2">#B50056</color>
+    <color name="c3">#3F0093</color>
+    <color name="c4">#008500</color>
+    <color name="c5">#AEAE33</color>
+    <color name="c6">#760003</color>
+    <color name="c12">#774A00</color>
+    <color name="c7">#033d0b</color>
+    <color name="c8">#635FC4</color>
+    <color name="c9">#773500</color>
+    <color name="c10">#582674</color>
+    <color name="c11">#ED5A6B</color>
+
 
 </resources>

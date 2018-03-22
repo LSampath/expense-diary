@@ -5,7 +5,10 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import com.lahiru.cem.models.Account;
+import com.lahiru.cem.models.CharSummary;
 import com.lahiru.cem.models.Summary;
+
+import java.util.ArrayList;
 
 /**
  * Created by Lahiru on 3/13/2018.
@@ -76,5 +79,21 @@ public class SummaryController {
             result[1] = res.getDouble(0);
         }
         return result;
+    }
+
+    // get total amounts for selected inOut and account, categorywise ------------------------------
+    public static CharSummary getCategoryWiseDetails(DatabaseHelper dbHelper, Summary summary) {
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        Cursor res = db.rawQuery("select sum(amount), category from " + DatabaseHelper.TRANSACTION_TABLE +
+                " where aid='" +  summary.getAID() + "' and type='" + summary.getInOut() + "'" +
+                " and (date<='" + summary.getToDate() + "' and date>='" + summary.getFromDate() + "')" +
+                " group by category", null);
+
+        CharSummary charSummary = new CharSummary();
+        while (res.moveToNext()) {
+            Log.i("TEST", res.getString(1) + " : " + res.getDouble(0));
+            charSummary.setData(res.getString(1), res.getFloat(0));
+        }
+        return charSummary;
     }
 }
