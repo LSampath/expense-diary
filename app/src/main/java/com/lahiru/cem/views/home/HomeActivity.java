@@ -40,7 +40,7 @@ public class HomeActivity extends AppCompatActivity {
 
     private void setupViewPager(ViewPager viewPager) {
         SectionPagerAdapter adapter = new SectionPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(new TransactionsFragment(), "TRANSACTIONS");
+        adapter.addFragment(new TransactionsFragment(), "HOME");
         adapter.addFragment(new SummaryFragment(), "SUMMARY");
         adapter.addFragment(new ChartsFragment(), "CHART");
         adapter.addFragment(new ForecastFragment(), "FORECAST");

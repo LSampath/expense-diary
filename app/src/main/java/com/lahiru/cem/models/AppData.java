@@ -26,6 +26,10 @@ public class AppData {
             R.drawable.icn_salary, R.drawable.icn_business, R.drawable.icn_interest, R.drawable.icn_other,
             R.drawable.icn_debt, R.drawable.icn_replay
     };
+    private int[] colors = {
+            R.color.c1, R.color.c2, R.color.c3, R.color.c4, R.color.c5, R.color.c6,
+            R.color.c7, R.color.c8, R.color.c9, R.color.c10, R.color.c11, R.color.c12
+    };
 
     private static AppData instance;
     private Account account;
@@ -59,6 +63,10 @@ public class AppData {
 
     public int[] getInflowIconList() {
         return inflowIconList;
+    }
+
+    public int[] getColorList() {
+        return colors;
     }
 
     public int getInflowIcon(String category) {

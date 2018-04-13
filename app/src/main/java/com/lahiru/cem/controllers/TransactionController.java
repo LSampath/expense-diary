@@ -130,7 +130,7 @@ public class TransactionController {
 
     public static ArrayList<String> getLendingDates(DatabaseHelper dbHelper, String inOut) {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
-        Cursor res = db.rawQuery("select distinct date from " + DatabaseHelper.TRANSACTION_TABLE + " where " +
+        Cursor res = db.rawQuery("select distinct date, category from " + DatabaseHelper.TRANSACTION_TABLE + " where " +
                 "type='" + inOut + "' and (category='Loan' or category='Debt') order by date", null);
         ArrayList<String> dateList = new ArrayList<>();
         while (res.moveToNext()) {
@@ -156,8 +156,8 @@ public class TransactionController {
 
     public static ArrayList<String> getLendings(DatabaseHelper dbHelper, String date, String inOut) {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
-        Cursor res = db.rawQuery("select tid from " + DatabaseHelper.TRANSACTION_TABLE + " where date='" + date + "' " +
-                "and type='" + inOut + "'", null);
+        Cursor res = db.rawQuery("select tid, category from " + DatabaseHelper.TRANSACTION_TABLE + " where date='" + date + "' " +
+                "and type='" + inOut + "' and (category='Loan' or category='Debt') order by date", null);
         ArrayList<String> transList = new ArrayList<>();
         while (res.moveToNext()) {
             transList.add(res.getString(0));

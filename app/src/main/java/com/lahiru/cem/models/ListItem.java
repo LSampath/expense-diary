@@ -8,6 +8,7 @@ public class ListItem {
     public static final int TRANSACTION_ITEM = 0;
     public static final int DATE_ITEM = 1;
     public static final int REPAYMENT_ITEM = 2;
+    public static final int FORECAST_ITEM = 3;
 
     private int type;
     private String value;

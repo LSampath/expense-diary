@@ -8,7 +8,7 @@ import java.util.ArrayList;
  * Created by Lahiru on 3/18/2018.
  */
 
-public class CharSummary {
+public class CharSummary { // not used
 
     private ArrayList<String> categoryList;
     private ArrayList<PieEntry> dataList;

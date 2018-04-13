@@ -8,6 +8,7 @@ import com.lahiru.cem.models.Account;
 import com.lahiru.cem.models.CharSummary;
 import com.lahiru.cem.models.Summary;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 /**
@@ -91,9 +92,25 @@ public class SummaryController {
 
         CharSummary charSummary = new CharSummary();
         while (res.moveToNext()) {
-            Log.i("TEST", res.getString(1) + " : " + res.getDouble(0));
             charSummary.setData(res.getString(1), res.getFloat(0));
         }
-        return charSummary;
+        return charSummary;         // not used
+    }
+
+    public static ArrayList<String[]> getTotalsByDate(DatabaseHelper dbHelper, String category, String type) {
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        String query = "select date, sum(amount) from " + DatabaseHelper.TRANSACTION_TABLE +
+                " where type='" + type + "' and category='" + category + "' group by date order by date desc";
+        if (category.equals("ALL")) {
+            query = "select date, sum(amount) from " + DatabaseHelper.TRANSACTION_TABLE +
+                    " where type='" + type + "' group by date order by date desc";
+        }
+        Cursor res = db.rawQuery(query, null);
+
+        ArrayList<String[]> result = new ArrayList<>();
+        while(res.moveToNext()) {
+            result.add(new String[]{res.getString(0), res.getString(1)});
+        }
+        return  result;
     }
 }

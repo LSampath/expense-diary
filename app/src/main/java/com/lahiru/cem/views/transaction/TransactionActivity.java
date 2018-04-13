@@ -3,15 +3,21 @@ package com.lahiru.cem.views.transaction;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.content.res.TypedArray;
 import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.method.KeyListener;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -28,6 +34,7 @@ import com.lahiru.cem.views.adapters.CustomSpinAdapter;
 import com.lahiru.cem.controllers.DatabaseHelper;
 import com.lahiru.cem.controllers.TransactionController;
 import com.lahiru.cem.models.Transaction;
+import com.lahiru.cem.views.adapters.TextValidator;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -39,9 +46,9 @@ import java.util.Locale;
 public class TransactionActivity extends AppCompatActivity {
 
     private Calendar dateCalendar = Calendar.getInstance();
+    private Calendar dueDateCalendar = Calendar.getInstance();
     private DatePickerDialog.OnDateSetListener date;
     private DatePickerDialog.OnDateSetListener dueDate;
-    private Calendar dueDateCalendar = Calendar.getInstance();
     private android.support.v7.widget.Toolbar toolbar;
     private CustomSpinAdapter categoryAdapter;
 
@@ -59,6 +66,12 @@ public class TransactionActivity extends AppCompatActivity {
     private DatabaseHelper db;
     public final int REPAYMENT_RESULT_CODE = 1;
 
+    private String amountValid;
+    private String dateValid;
+    private String noteValid;
+    private String dueDateValid;
+    private String partnerValid;
+    private String sourceValid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,7 +82,6 @@ public class TransactionActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         db = new DatabaseHelper(this);
-
         newTrans = true;
 
         amountText = (EditText) findViewById(R.id.amountTxt);
@@ -82,9 +94,38 @@ public class TransactionActivity extends AppCompatActivity {
         noteText = (EditText) findViewById(R.id.noteTxt);
         sourceTxt = (TextView) findViewById(R.id.sourceTxt);
 
+        // initialize amount edit text -------------------------------------------------------------
+        amountText.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View view, int keyCode, KeyEvent keyEvent) {       // focus next input
+                if ((keyEvent.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)) {
+                    radioGroup.requestFocus();      // illusion - to release focus
+                    hideSoftKeyboard();
+                }
+                return false;
+            }
+        });
+        amountValid = "Please provide an amount.";
+        amountText.addTextChangedListener(new TextValidator(amountText) {
+            @Override
+            public void validate(TextView textView, String text) {
+                if (text.length() == 0) {
+                    amountValid = "Please provide an amount.";
+                } else if ((Double.parseDouble(text) > 9999999999.99) || (Double.parseDouble(text) < 0)) {
+                    amountValid = "Amount value is much larger.";
+                } else {
+                    amountValid = "GOOD";
+                }
+                if (amountValid.equals("GOOD")) {
+                    amountText.setTextColor(TransactionActivity.this.getResources().getColor(R.color.black));
+                } else {
+                    amountText.setTextColor(TransactionActivity.this.getResources().getColor(R.color.outflow_color));
+                }
+            }
+        });
 
-        //-initializing date picker elements--------------------------------------------------------
-        dateText.setFocusable(false);
+        // initializing date picker elements--------------------------------------------------------
+        dateValid = "Please select transaction date.";
         date = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker datePicker, int year, int month, int day) {
@@ -92,6 +133,7 @@ public class TransactionActivity extends AppCompatActivity {
                 dateCalendar.set(Calendar.MONTH, month);
                 dateCalendar.set(Calendar.DAY_OF_MONTH, day);
                 updateDateText();
+                radioGroup.requestFocus();
             }
         };
         dateText.setOnClickListener(new View.OnClickListener() {
@@ -121,6 +163,8 @@ public class TransactionActivity extends AppCompatActivity {
                     iconList = AppData.getInstance().getInflowIconList();
                 }
                 categoryAdapter.setItems(iconList, nameList);
+                categorySpin.setSelection(0);
+                radioGroup.requestFocus();      // illusion
             }
         });
         radioGroup.check(R.id.outflowRadioBtn);
@@ -135,7 +179,7 @@ public class TransactionActivity extends AppCompatActivity {
                 }else {
                     selectedCategory = AppData.getInstance().getOutflowNameList()[i];
                 }
-
+                // show hide elements for lendings and repayments
                 ImageView dueDateView = (ImageView) findViewById(R.id.dueDateView);
                 ImageView partnerView = (ImageView) findViewById(R.id.partnerView);
                 ImageView sourceView = (ImageView) findViewById(R.id.sourceView);
@@ -158,15 +202,43 @@ public class TransactionActivity extends AppCompatActivity {
                     sourceTxt.setVisibility(View.INVISIBLE);
                     sourceView.setVisibility(View.INVISIBLE);
                 }
+                radioGroup.requestFocus();  // illusion
             }
-
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
             }
         });
 
-        //initialize due date element --------------------------------------------------------------
-        dueDateTxt.setFocusable(false);
+        // initialize note text --------------------------------------------------------------------
+        noteText.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View view, int keyCode, KeyEvent keyEvent) {       // focus next input
+                if ((keyEvent.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)) {
+                    radioGroup.requestFocus();      // illusion - to release focus
+                    hideSoftKeyboard();
+                }
+                return false;
+            }
+        });
+        noteValid = "GOOD";
+        noteText.addTextChangedListener(new TextValidator(noteText) {
+            @Override
+            public void validate(TextView textView, String text) {
+                if (text.length() > 100) {
+                    noteValid = "Note is too long to save.";
+                } else {
+                    noteValid = "GOOD";
+                }
+                if (noteValid.equals("GOOD")) {
+                    noteText.setTextColor(TransactionActivity.this.getResources().getColor(R.color.black));
+                } else {
+                    noteText.setTextColor(TransactionActivity.this.getResources().getColor(R.color.outflow_color));
+                }
+            }
+        });
+
+        // initialize due date element -------------------------------------------------------------
+        dueDateValid = "Please select due date for repayment.";
         dueDate = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker datePicker, int year, int month, int day) {
@@ -174,6 +246,7 @@ public class TransactionActivity extends AppCompatActivity {
                 dueDateCalendar.set(Calendar.MONTH, month);
                 dueDateCalendar.set(Calendar.DAY_OF_MONTH, day);
                 updateDueDateText();
+                radioGroup.requestFocus();      // illusion - to release focus
             }
         };
         dueDateTxt.setOnClickListener(new View.OnClickListener() {
@@ -184,7 +257,26 @@ public class TransactionActivity extends AppCompatActivity {
             }
         });
 
+        // initialize partner text -----------------------------------------------------------------
+        partnerValid = "GOOD";
+        partnerTxt.addTextChangedListener(new TextValidator(partnerTxt) {
+            @Override
+            public void validate(TextView textView, String text) {
+                if (text.length() > 50) {
+                    partnerValid = "Partner name is too long to save.";
+                } else {
+                    partnerValid = "GOOD";
+                }
+                if (partnerValid.equals("GOOD")) {
+                    partnerTxt.setTextColor(TransactionActivity.this.getResources().getColor(R.color.black));
+                } else {
+                    partnerTxt.setTextColor(TransactionActivity.this.getResources().getColor(R.color.outflow_color));
+                }
+            }
+        });
+
         //---initialize source element--------------------------------------------------------------
+        sourceValid = "Please select source lending transaction.";
         sourceTxt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -196,7 +288,6 @@ public class TransactionActivity extends AppCompatActivity {
                 // this is a special case where source transactions are negative inOut of the repayment transaction
                 intent.putExtra("IN_OUT", inOut);
                 startActivityForResult(intent, REPAYMENT_RESULT_CODE);
-                Log.i("TEST", "activity started");
             }
         });
 
@@ -292,7 +383,14 @@ public class TransactionActivity extends AppCompatActivity {
                 text += " With, " + sourceLending.getPartner();
             }
             sourceTxt.setText(text);
+            sourceValid = "GOOD";
         }
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        hideSoftKeyboard();
+        return super.onTouchEvent(event);
     }
 
     private void updateDateText() {
@@ -300,6 +398,7 @@ public class TransactionActivity extends AppCompatActivity {
         SimpleDateFormat dateFormat = new SimpleDateFormat(myFormat, Locale.US);
         EditText dateText = (EditText) findViewById(R.id.dateTxt);
         dateText.setText(dateFormat.format(dateCalendar.getTime()));
+        dateValid = "GOOD";
     }
 
     private void updateDueDateText() {
@@ -307,24 +406,31 @@ public class TransactionActivity extends AppCompatActivity {
         SimpleDateFormat dateFormat = new SimpleDateFormat(myFormat, Locale.US);
         EditText dueDateTxt = (EditText) findViewById(R.id.dueDateTxt);
         dueDateTxt.setText(dateFormat.format(dueDateCalendar.getTime()));
+        dueDateValid = "GOOD";
     }
 
 
     private void saveTransaction() throws ParseException {
-        String amount = amountText.getText().toString();
-        if (amount.equals("")) {
-            Toast.makeText(this, "Amount should be provided.", Toast.LENGTH_SHORT).show();
+        // validation
+        if (!amountValid.equals("GOOD")) {
+            Toast.makeText(this, amountValid, Toast.LENGTH_SHORT).show();
             return;
         }
+        if (!dateValid.equals("GOOD")) {
+            Toast.makeText(this, dateValid, Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (!noteValid.equals("GOOD")) {
+            Toast.makeText(this, noteValid, Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        // retrieve data
+        String amount = amountText.getText().toString();
         amount = String.format("%.2f", Double.parseDouble(amount));
 
         String date = dateText.getText().toString();
-        if (date.equals("")) {
-            Toast.makeText(this, "DayDate should be provided.", Toast.LENGTH_SHORT).show();
-            return;
-        }
         Date parsed = new SimpleDateFormat("EEE,  dd MMM yyyy").parse(date);
-
         String day = new SimpleDateFormat("EEE").format(parsed);
         date = new SimpleDateFormat("yyyy-MM-dd").format(parsed);
 
@@ -340,23 +446,33 @@ public class TransactionActivity extends AppCompatActivity {
 
         //for Loans and Debts, taking due date and partner------------------------------------------
         if (category.equals("Loan") || category.equals("Debt")) {
-            EditText dueDateText = (EditText) findViewById(R.id.dueDateTxt);
-            String dueDate = dueDateText.getText().toString();
-            if (date.equals("")) {
-                Toast.makeText(this, "Due date should be provided.", Toast.LENGTH_SHORT).show();
+            // validation
+            if (!dueDateValid.equals("GOOD")) {
+                Toast.makeText(this, dueDateValid, Toast.LENGTH_SHORT).show();
                 return;
             }
+            if (!partnerValid.equals("GOOD")) {
+                Toast.makeText(this, partnerValid, Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            // retrieve data
+            String dueDate = dueDateTxt.getText().toString();
             Date dueParsed = new SimpleDateFormat("EEE,  dd MMM yyyy").parse(dueDate);
             dueDate = new SimpleDateFormat("yyyy-MM-dd").format(dueParsed);
-
-            EditText partnerText = (EditText) findViewById(R.id.partnerTxt);
-            String partner = partnerText.getText().toString();
+            String partner = partnerTxt.getText().toString();
 
             transaction.setLendingDetails(partner, dueDate);
         }
 
         //for repayments and collections, selecting source transactions-----------------------------
         if (category.equals("Debt Repayment") || category.equals("Loan Collection")) {
+            // validation
+            if (!sourceValid.equals("GOOD")) {
+                Toast.makeText(this, sourceValid, Toast.LENGTH_SHORT).show();
+                return;
+            }
+            // retrieve data
             transaction.setRepaymentDetails(lend_tid);
         }
 
@@ -387,7 +503,7 @@ public class TransactionActivity extends AppCompatActivity {
         return TransactionController.updateTransaction(db, transaction);
     }
 
-    public void removeTransaction() {
+    private void removeTransaction() {
         String tid = getIntent().getStringExtra("TID");
         DatabaseHelper db = new DatabaseHelper(this);
         int result = TransactionController.deleteTransaction(db, tid);
@@ -399,5 +515,8 @@ public class TransactionActivity extends AppCompatActivity {
         }
     }
 
-
+    private void hideSoftKeyboard() {
+        InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+        inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+    }
 }

@@ -149,13 +149,11 @@ public class ChartsFragment extends Fragment {
         pieChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
             @Override
             public void onValueSelected(Entry e, Highlight h) {
-                Log.i("TEST", "listener working");
                 ArrayList<PieEntry> dataList = charSummary.getDataList();
                 ArrayList<String> categoryList = charSummary.getCategoryList();
                 int index = dataList.indexOf(e);
                 String category = categoryList.get(index);
                 PieEntry pieEntry = dataList.get(index);
-                Log.i("TEST", category);
                 Toast.makeText(activity, category + ", Total amount : Rs." + pieEntry.getY(), Toast.LENGTH_SHORT).show();
             }
             @Override
@@ -197,23 +195,18 @@ public class ChartsFragment extends Fragment {
         pieChart.setHoleRadius(10f);
         pieChart.setTransparentCircleAlpha(0);
         pieChart.setDrawEntryLabels(true);
+        Description ds = new Description();
+        ds.setText("");
+        pieChart.setDescription(ds);
 
         PieDataSet pieDataSet = new PieDataSet(charSummary.getDataList(), "Total amounts");
         pieDataSet.setSliceSpace(3);
 
         ArrayList<Integer> colors = new ArrayList<>();
-        colors.add(ContextCompat.getColor(activity, R.color.c1));
-        colors.add(ContextCompat.getColor(activity, R.color.c2));
-        colors.add(ContextCompat.getColor(activity, R.color.c3));
-        colors.add(ContextCompat.getColor(activity, R.color.c4));
-        colors.add(ContextCompat.getColor(activity, R.color.c5));
-        colors.add(ContextCompat.getColor(activity, R.color.c6));
-        colors.add(ContextCompat.getColor(activity, R.color.c7));
-        colors.add(ContextCompat.getColor(activity, R.color.c8));
-        colors.add(ContextCompat.getColor(activity, R.color.c9));
-        colors.add(ContextCompat.getColor(activity, R.color.c10));
-        colors.add(ContextCompat.getColor(activity, R.color.c11));
-        colors.add(ContextCompat.getColor(activity, R.color.c12));
+        int[] colorList = AppData.getInstance().getColorList();
+        for (int color: colorList) {
+            colors.add(ContextCompat.getColor(activity, color));
+        }
         pieDataSet.setColors(colors);
 
         PieData pieData = new PieData(pieDataSet);

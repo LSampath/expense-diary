@@ -29,9 +29,15 @@ public class CustomSpinAdapter extends BaseAdapter {
         this.inflter = (LayoutInflater.from(applicationContext));
     }
 
+    public CustomSpinAdapter(Context applicationContext, String[] nameList) {
+        this.context = applicationContext;
+        this.nameList = nameList;
+        this.inflter = (LayoutInflater.from(applicationContext));
+    }
+
     @Override
     public int getCount() {
-        return iconList.length;
+        return nameList.length;
     }
 
     @Override
@@ -46,11 +52,17 @@ public class CustomSpinAdapter extends BaseAdapter {
 
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
-        view = inflter.inflate(R.layout.spinner_item, null);
-        ImageView icon = view.findViewById(R.id.icon_image);
-        TextView names = view.findViewById(R.id.text_item);
-        icon.setImageResource(iconList[i]);
-        names.setText(nameList[i]);
+        if (iconList == null) {
+            view = inflter.inflate(R.layout.spinner_item, null);
+            TextView names = view.findViewById(R.id.text_item);
+            names.setText(nameList[i]);
+        } else {
+            view = inflter.inflate(R.layout.spinner_item_icon, null);
+            ImageView icon = view.findViewById(R.id.icon_image);
+            TextView names = view.findViewById(R.id.text_item);
+            icon.setImageResource(iconList[i]);
+            names.setText(nameList[i]);
+        }
         return view;
     }
 

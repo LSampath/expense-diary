@@ -59,9 +59,9 @@ public class AccountController {
         }
     }
 
-//    public static long testMethod(DatabaseHelper dbHelper) {
-//        SQLiteDatabase db = dbHelper.getWritableDatabase();
-//
-//        return db.delete(DatabaseHelper.ACCOUNT_TABLE, "email!=?", new String[]{"lahirusampath.15@cse.mrt.ac.lk"} );
-//    }
+    public static int deleteAccount(DatabaseHelper dbHelper, String aid) {
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        return db.delete(DatabaseHelper.ACCOUNT_TABLE, "aid=?", new String[]{aid});
+    }
+
 }

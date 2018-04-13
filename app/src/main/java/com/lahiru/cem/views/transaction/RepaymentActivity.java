@@ -27,8 +27,6 @@ public class RepaymentActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_repayment);
 
-        Log.i("TEST", "activity started");
-
         recyclerView = (RecyclerView) findViewById(R.id.recycle_view_replayment);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));

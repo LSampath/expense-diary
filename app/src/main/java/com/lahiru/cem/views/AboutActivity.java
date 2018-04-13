@@ -1,4 +1,4 @@
-package com.lahiru.cem;
+package com.lahiru.cem.views;
 
 import android.annotation.SuppressLint;
 import android.support.v7.app.ActionBar;
@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.view.MotionEvent;
 import android.view.View;
+
+import com.lahiru.cem.R;
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.

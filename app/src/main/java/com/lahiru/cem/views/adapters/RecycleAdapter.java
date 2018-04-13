@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.TypedArray;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,6 +15,7 @@ import android.widget.TextView;
 
 import com.lahiru.cem.R;
 import com.lahiru.cem.controllers.DatabaseHelper;
+import com.lahiru.cem.controllers.SummaryController;
 import com.lahiru.cem.controllers.TransactionController;
 import com.lahiru.cem.models.AppData;
 import com.lahiru.cem.models.ListItem;
@@ -54,6 +56,9 @@ public class RecycleAdapter extends RecyclerView.Adapter<RecycleAdapter.ViewHold
             case ListItem.REPAYMENT_ITEM:
                 layoutType = R.layout.list_item_transaction;
                 break;
+            case ListItem.FORECAST_ITEM:
+                layoutType = R.layout.list_item_forecast_total;
+                break;
         }
         View view = LayoutInflater.from(parent.getContext()).inflate(layoutType, parent, false);
         return new ViewHolder(view);
@@ -65,6 +70,11 @@ public class RecycleAdapter extends RecyclerView.Adapter<RecycleAdapter.ViewHold
 
         //------if type == TRANSACTION_ITEM then bind details and set listener----------------------
         if (listItem.getType() == ListItem.TRANSACTION_ITEM) {
+
+            int[] attrs = new int[]{R.attr.selectableItemBackground};
+            TypedArray typedArray = context.obtainStyledAttributes(attrs);
+            int backgroundResource = typedArray.getResourceId(0, 0);
+            holder.itemView.setBackgroundResource(backgroundResource);
 
             final Transaction trans = TransactionController.getTransactionDetails(db, listItem.getValue());
             int icon = 0;
@@ -121,6 +131,12 @@ public class RecycleAdapter extends RecyclerView.Adapter<RecycleAdapter.ViewHold
 
         //--------if type == REPAYMENT_ITEM then bind details---------------------------------------
         } else if (listItem.getType() == ListItem.REPAYMENT_ITEM) {
+
+            int[] attrs = new int[]{R.attr.selectableItemBackground};
+            TypedArray typedArray = context.obtainStyledAttributes(attrs);
+            int backgroundResource = typedArray.getResourceId(0, 0);
+            holder.itemView.setBackgroundResource(backgroundResource);
+
             final Transaction trans = TransactionController.getTransactionDetails(db, listItem.getValue());
             int icon = 0;
             if (trans.getInOut().equals("inflow")) {
@@ -134,7 +150,7 @@ public class RecycleAdapter extends RecyclerView.Adapter<RecycleAdapter.ViewHold
             holder.headingText.setText("Rs. " + trans.getAmount());
             holder.descriptionText.setText(trans.getNote());
             try {
-                Log.i("TEST", ""+trans.getDueDate());
+                Log.i("TEST", " due date "+trans.getDueDate());
                 Date dueParsed = new SimpleDateFormat("yyyy-MM-dd").parse(trans.getDueDate());
                 String dueDate = new SimpleDateFormat("dd MMM yyyy").format(dueParsed);
                 holder.factBottomText.setText("Due " + dueDate);
@@ -160,6 +176,27 @@ public class RecycleAdapter extends RecyclerView.Adapter<RecycleAdapter.ViewHold
                     activity.finish();
                 }
             });
+
+        //--------if type == FORECAST_ITEM then bind details----------------------------------------
+        } else if (listItem.getType() == ListItem.FORECAST_ITEM) {
+            String[] values = listItem.getValue().split("[|]");
+            String category = values[0];
+            int color = Integer.parseInt(values[1]);
+            String inOut = values[2];
+            String period = values[3];
+            // values[4] = day or month
+
+//            double predictedTotal = SummaryController.getForecastedValue(db, category, inOut, period, values[4]);
+            double predictedTotal = 23000.93;
+
+            holder.headingText.setText(category);
+            holder.descriptionText.setText("Rs. " + predictedTotal);
+            if (inOut.equals("inflow")) {
+                holder.descriptionText.setTextColor(context.getResources().getColor(R.color.inflow_color));
+            } else {
+                holder.descriptionText.setTextColor(context.getResources().getColor(R.color.outflow_color));
+            }
+            holder.headingText.setTextColor(context.getResources().getColor(color));
         }
     }
 
@@ -187,6 +224,8 @@ public class RecycleAdapter extends RecyclerView.Adapter<RecycleAdapter.ViewHold
         public TextView factBottomText;
         public ImageView categoryIcon;
 
+        public View itemView;
+
         public ViewHolder(View itemView) {
             super(itemView);
             headingText = itemView.findViewById(R.id.headingTxt);
@@ -194,6 +233,8 @@ public class RecycleAdapter extends RecyclerView.Adapter<RecycleAdapter.ViewHold
             factTopText = itemView.findViewById(R.id.factTopTxt);
             factBottomText = itemView.findViewById(R.id.factBottomTxt);
             categoryIcon = itemView.findViewById(R.id.img_litm_icn);
+
+            this.itemView = itemView;
         }
     }
 }

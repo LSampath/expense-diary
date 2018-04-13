@@ -1,109 +1,120 @@
 package com.lahiru.cem.views.home;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ImageView;
+import android.widget.RadioGroup;
+import android.widget.RelativeLayout;
+import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.lahiru.cem.R;
+import com.lahiru.cem.controllers.DatabaseHelper;
+import com.lahiru.cem.controllers.SummaryController;
+import com.lahiru.cem.controllers.TransactionController;
+import com.lahiru.cem.models.AppData;
+import com.lahiru.cem.models.ListItem;
+import com.lahiru.cem.views.adapters.CustomSpinAdapter;
+import com.lahiru.cem.views.adapters.NotificationReceiver;
+import com.lahiru.cem.views.adapters.RecycleAdapter;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link ForecastFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link ForecastFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+import java.util.ArrayList;
+import java.util.Calendar;
+
+
 public class ForecastFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private HomeActivity activity;
+    private DatabaseHelper db;
+    private AppData appData;
 
-    private OnFragmentInteractionListener mListener;
+    private CustomSpinAdapter categoryAdapter;
+    private Spinner categorySpin;
+    private RadioGroup radioGroup;
 
-    public ForecastFragment() {
-        // Required empty public constructor
-    }
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View fragment = inflater.inflate(R.layout.fragment_forecast, container, false);
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment ForecastFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static ForecastFragment newInstance(String param1, String param2) {
-        ForecastFragment fragment = new ForecastFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
+        activity = (HomeActivity) getActivity();
+        db = new DatabaseHelper(activity);
+        appData = AppData.getInstance();
+
+        // initialize radio buttons and category spin ----------------------------------------------
+        categorySpin = (Spinner) fragment.findViewById(R.id.spin_category);
+        radioGroup = (RadioGroup) fragment.findViewById(R.id.radio_group_type);
+        categoryAdapter=new CustomSpinAdapter(activity,
+                AppData.getInstance().getOutflowIconList(), AppData.getInstance().getOutflowNameList());
+        categorySpin.setAdapter(categoryAdapter);
+
+        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup radioGroup, int i) {
+                String[] nameList = new String[]{};
+                int[] iconList = new int[]{};
+                String category;
+                String inOut;
+                if (i == R.id.rb_outflow) {
+                    nameList = AppData.getInstance().getOutflowNameList();
+                    iconList = AppData.getInstance().getOutflowIconList();
+                    inOut = "outflow";
+                    category = AppData.getInstance().getOutflowNameList()[0];
+                }else {
+                    nameList = AppData.getInstance().getInflowNameList();
+                    iconList = AppData.getInstance().getInflowIconList();
+                    inOut = "inflow";
+                    category = AppData.getInstance().getInflowNameList()[0];
+                }
+                categoryAdapter.setItems(iconList, nameList);
+                categorySpin.setSelection(0);
+                forecastNextValue(category, inOut);
+            }
+        });
+        radioGroup.check(R.id.rb_outflow);
+
+        // set listener for category spinner -------------------------------------------------------
+        categorySpin.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                String category;
+                String inOut;
+                if (radioGroup.getCheckedRadioButtonId() == R.id.rb_inflow) {
+                    category = AppData.getInstance().getInflowNameList()[i];
+                    inOut = "inflow";
+                }else {
+                    category = AppData.getInstance().getOutflowNameList()[i];
+                    inOut = "outflow";
+                }
+                forecastNextValue(category, inOut);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+            }
+        });
+
         return fragment;
     }
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+    private void forecastNextValue(String category, String inOut) {
+        ArrayList<String[]> totals = SummaryController.getTotalsByDate(db, category, inOut);
+        if ()
+        for (String[] total: totals) {
+            Log.i("TEST", "date = " + total[0] + " | total = " + total[1]);
         }
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_forecast, container, false);
-    }
-
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
-    }
-
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
-    }
 }
