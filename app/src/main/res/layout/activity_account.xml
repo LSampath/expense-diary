@@ -3,9 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:background="@color/light_gray"
     android:layout_height="match_parent"
-    tools:context="com.lahiru.cem.views.start.StartActivity">
+    tools:context="com.lahiru.cem.views.account.AccountActivity">
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/appbar"
@@ -14,7 +13,8 @@
         android:background="?attr/colorPrimary"
         android:theme="@style/AppTheme.AppBarOverlay"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
@@ -23,18 +23,20 @@
             android:background="?attr/colorPrimary"
             app:navigationIcon="?attr/homeAsUpIndicator"
             app:popupTheme="@style/AppTheme.PopupOverlay"
-            app:title="@string/title_activity_start" />
+            app:title="@string/title_activity_account" />
 
     </android.support.design.widget.AppBarLayout>
 
     <fragment
-        android:id="@+id/framgent_holder"
-        android:name="com.lahiru.cem.views.start.SelectAccountFragment"
+        android:id="@+id/fragment_holder"
+        android:name="com.lahiru.cem.views.account.CurrentAccountFragment"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/appbar" />
+
+
 
 </android.support.constraint.ConstraintLayout>

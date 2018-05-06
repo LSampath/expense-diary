@@ -82,7 +82,7 @@ public class SummaryController {
         return result;
     }
 
-    // get total amounts for selected inOut and account, categorywise ------------------------------
+    // get total amounts for selected inOut and account, category wise -----------------------------
     public static CharSummary getCategoryWiseDetails(DatabaseHelper dbHelper, Summary summary) {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         Cursor res = db.rawQuery("select sum(amount), category from " + DatabaseHelper.TRANSACTION_TABLE +
@@ -94,16 +94,21 @@ public class SummaryController {
         while (res.moveToNext()) {
             charSummary.setData(res.getString(1), res.getFloat(0));
         }
-        return charSummary;         // not used
+        if (res.getCount() == 0) {
+            return null;
+        }
+        return charSummary;
     }
 
-    public static ArrayList<String[]> getTotalsByDate(DatabaseHelper dbHelper, String category, String type) {
+    // get totals amount by date for selected category ---------------------------------------------
+    public static ArrayList<String[]> getTotalsByDate(DatabaseHelper dbHelper, String aid, String category, String type) {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         String query = "select date, sum(amount) from " + DatabaseHelper.TRANSACTION_TABLE +
-                " where type='" + type + "' and category='" + category + "' group by date order by date desc";
+                " where aid=" + aid + " and type='" + type + "' and category='" + category + "' " +
+                "group by date order by date desc";
         if (category.equals("ALL")) {
             query = "select date, sum(amount) from " + DatabaseHelper.TRANSACTION_TABLE +
-                    " where type='" + type + "' group by date order by date desc";
+                    " where aid=" + aid + " and type='" + type + "' group by date order by date asc";
         }
         Cursor res = db.rawQuery(query, null);
 

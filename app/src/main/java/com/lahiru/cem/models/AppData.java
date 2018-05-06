@@ -10,6 +10,9 @@ import com.lahiru.cem.R;
 
 public class AppData {
 
+    public static final int REPAYMENT_RESULT_CODE = 1;
+    public static int ACCOUNT_RESULT_CODE = 2;
+
     private String[] outflowNameList = {
             "Food & Beverage", "Bills & Fees", "Shopping", "Fun & Love", "Travel", "Health", "Family", "Education", "Business",
             "Other", "Loan", "Debt Repayment"

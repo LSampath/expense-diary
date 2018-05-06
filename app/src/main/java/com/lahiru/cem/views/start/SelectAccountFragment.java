@@ -1,4 +1,4 @@
-package com.lahiru.cem.views.account;
+package com.lahiru.cem.views.start;
 
 import android.os.Bundle;
 import android.app.Fragment;

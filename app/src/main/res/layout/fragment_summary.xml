@@ -34,7 +34,7 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="8dp"
             android:text=" : "
             android:textColor="@color/inflow_color"
             android:textSize="18sp"
@@ -70,11 +70,27 @@
             app:layout_constraintTop_toBottomOf="@+id/textView18" />
 
         <TextView
+            android:id="@+id/textView20"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:text=" : "
+            android:textColor="@color/outflow_color"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView19" />
+
+        <TextView
             android:id="@+id/texttView4"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="8dp"
             android:text="Total Inflow"
             android:textAlignment="textEnd"
             android:textColor="@color/inflow_color"
@@ -110,22 +126,33 @@
             android:id="@+id/textView11"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
             android:layout_marginEnd="8dp"
             android:text="Most expensive"
             android:textAlignment="textEnd"
             android:textColor="@color/outflow_color"
             android:textSize="18sp"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/textView19"
             app:layout_constraintTop_toBottomOf="@+id/textView10" />
+
+        <TextView
+            android:id="@+id/textVieww11"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginTop="8dp"
+            android:text="Balance"
+            android:textAlignment="textEnd"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toStartOf="@+id/textView20"
+            app:layout_constraintTop_toBottomOf="@+id/textView11" />
 
         <TextView
             android:id="@+id/tv_total_inflow"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="8dp"
             android:text="Rs. 14500"
             android:textColor="@color/inflow_color"
             android:textSize="18sp"
@@ -146,7 +173,7 @@
         <TextView
             android:id="@+id/tv_total_outflow"
             android:layout_width="0dp"
-            android:layout_height="21dp"
+            android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:text="Rs. 12500"
             android:textColor="@color/outflow_color"
@@ -165,204 +192,282 @@
             app:layout_constraintStart_toEndOf="@+id/textView19"
             app:layout_constraintTop_toBottomOf="@+id/tv_total_outflow" />
 
+        <TextView
+            android:id="@+id/tv_balance"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:text="Rs. 00"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            app:layout_constraintStart_toEndOf="@+id/textView20"
+            app:layout_constraintTop_toBottomOf="@+id/tv_most_expensive" />
+
     </android.support.constraint.ConstraintLayout>
 
-    <TextView
-        android:id="@+id/textViewr20"
+    <ScrollView
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
+        android:layout_height="0dp"
         android:layout_marginTop="8dp"
-        android:text="summarized details"
-        android:textAlignment="center"
-        android:textColor="@color/gray"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/layout_totals" />
+        app:layout_constraintTop_toBottomOf="@+id/layout_totals">
 
-    <TextView
-        android:id="@+id/tv_from_date"
-        android:layout_width="60dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="8dp"
-        android:text="From"
-        android:textSize="18sp"
-        app:layout_constraintBottom_toBottomOf="@+id/et_from_date"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/et_from_date"
-        app:layout_constraintVertical_bias="0.0" />
-
-    <EditText
-        android:id="@+id/et_from_date"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="32dp"
-        android:layout_marginTop="8dp"
-        android:background="@drawable/rounded_corner"
-        android:ems="10"
-        android:hint="Select date"
-        android:editable="false"
-        android:inputType="date"
-        android:padding="8dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/tv_from_date"
-        app:layout_constraintTop_toBottomOf="@+id/textViewr20" />
-
-    <TextView
-        android:id="@+id/tv_to_date"
-        android:layout_width="60dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="8dp"
-        android:text="To"
-        android:textSize="18sp"
-        app:layout_constraintBottom_toBottomOf="@+id/et_to_date"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/et_to_date"
-        app:layout_constraintVertical_bias="0.0" />
-
-    <EditText
-        android:id="@+id/et_to_date"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:background="@drawable/rounded_corner"
-        android:editable="false"
-        android:ems="10"
-        android:hint="Select date"
-        android:inputType="date"
-        android:padding="8dp"
-        app:layout_constraintEnd_toEndOf="@+id/et_from_date"
-        app:layout_constraintStart_toEndOf="@+id/tv_from_date"
-        app:layout_constraintTop_toBottomOf="@+id/et_from_date" />
-
-    <RadioGroup
-        android:id="@+id/radio_group_type"
-        android:layout_width="0dp"
-        android:layout_height="36dp"
-        android:layout_marginTop="8dp"
-        android:orientation="horizontal"
-        app:layout_constraintEnd_toEndOf="@+id/et_to_date"
-        app:layout_constraintStart_toStartOf="@+id/et_to_date"
-        app:layout_constraintTop_toBottomOf="@+id/et_to_date">
-
-        <RadioButton
-            android:id="@+id/rb_outflow"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:checked="true"
-            android:text="Outflow"
-            android:textSize="18sp" />
-
-        <RadioButton
-            android:id="@+id/rb_inflow"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Inflow"
-            android:textSize="18sp" />
-    </RadioGroup>
-
-    <RelativeLayout
-        android:id="@+id/spin_layout_category"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:background="@drawable/rounded_corner"
-        android:orientation="vertical"
-        app:layout_constraintEnd_toEndOf="@+id/et_to_date"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/radio_group_type"
-        app:layout_constraintTop_toBottomOf="@+id/radio_group_type">
-
-        <Spinner
-            android:id="@+id/spin_category"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_gravity="center"
-            android:layout_marginLeft="5dp"
-            android:background="@android:color/transparent"
-            android:gravity="center"
-            android:spinnerMode="dialog"
-            android:textSize="20sp" />
+            android:orientation="vertical">
 
-        <ImageView
-            android:layout_width="45dp"
-            android:layout_height="45dp"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_gravity="center"
-            android:src="@drawable/dropdown_arrow" />
+            <android.support.constraint.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/border_top">
 
-    </RelativeLayout>
+                <TextView
+                    android:id="@+id/tv_total_chart"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginTop="8dp"
+                    android:text="TOTAL AMOUNT OF CATEGORY"
+                    android:textAlignment="center"
+                    app:layout_constraintBottom_toTopOf="@+id/et_from_date"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/TexttVieew4"
-        android:layout_width="182dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="Transaction count"
-        android:textSize="18sp"
-        app:layout_constraintStart_toStartOf="@+id/tv_to_date"
-        app:layout_constraintTop_toBottomOf="@+id/spin_layout_category" />
+                <TextView
+                    android:id="@+id/tv_from_date"
+                    android:layout_width="60dp"
+                    android:layout_height="0dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="8dp"
+                    android:text="From"
+                    android:textSize="18sp"
+                    app:layout_constraintBottom_toBottomOf="@+id/et_from_date"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/et_from_date"
+                    app:layout_constraintVertical_bias="1.0" />
 
-    <TextView
-        android:id="@+id/textView23"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="Total amount"
-        android:textAlignment="viewStart"
-        android:textSize="18sp"
-        app:layout_constraintEnd_toEndOf="@+id/TexttVieew4"
-        app:layout_constraintStart_toStartOf="@+id/TexttVieew4"
-        app:layout_constraintTop_toBottomOf="@+id/TexttVieew4" />
+                <EditText
+                    android:id="@+id/et_from_date"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="32dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/rounded_corner"
+                    android:editable="false"
+                    android:ems="10"
+                    android:hint="Select date"
+                    android:inputType="date"
+                    android:padding="8dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="1.0"
+                    app:layout_constraintStart_toEndOf="@+id/tv_from_date"
+                    app:layout_constraintTop_toBottomOf="@+id/textViewr20" />
 
-    <TextView
-        android:id="@+id/textView24"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="Average amount per"
-        android:textAlignment="viewStart"
-        android:textSize="18sp"
-        app:layout_constraintEnd_toEndOf="@+id/textView23"
-        app:layout_constraintStart_toStartOf="@+id/textView23"
-        app:layout_constraintTop_toBottomOf="@+id/textView23" />
+                <TextView
+                    android:id="@+id/tv_to_date"
+                    android:layout_width="60dp"
+                    android:layout_height="0dp"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginTop="8dp"
+                    android:text="To"
+                    android:textSize="18sp"
+                    app:layout_constraintBottom_toBottomOf="@+id/et_to_date"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/et_to_date"
+                    app:layout_constraintVertical_bias="0.0" />
 
-    <TextView
-        android:id="@+id/tv_trans_count"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:text="13"
-        android:textSize="18sp"
-        app:layout_constraintStart_toEndOf="@+id/TexttVieew4"
-        app:layout_constraintTop_toTopOf="@+id/TexttVieew4" />
+                <EditText
+                    android:id="@+id/et_to_date"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/rounded_corner"
+                    android:editable="false"
+                    android:ems="10"
+                    android:hint="Select date"
+                    android:inputType="date"
+                    android:padding="8dp"
+                    app:layout_constraintEnd_toEndOf="@+id/et_from_date"
+                    app:layout_constraintStart_toEndOf="@+id/tv_from_date"
+                    app:layout_constraintTop_toBottomOf="@+id/et_from_date" />
 
-    <TextView
-        android:id="@+id/tv_total_amount"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:text="Rs. 234234"
-        android:textSize="18sp"
-        app:layout_constraintStart_toEndOf="@+id/textView23"
-        app:layout_constraintTop_toTopOf="@+id/textView23" />
+                <RadioGroup
+                    android:id="@+id/radio_group_pie"
+                    android:layout_width="0dp"
+                    android:layout_height="36dp"
+                    android:layout_marginTop="8dp"
+                    android:orientation="horizontal"
+                    app:layout_constraintEnd_toEndOf="@+id/et_to_date"
+                    app:layout_constraintStart_toStartOf="@+id/et_to_date"
+                    app:layout_constraintTop_toBottomOf="@+id/et_to_date">
 
-    <TextView
-        android:id="@+id/tv_avg_amount"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:text="Rs. 2344"
-        android:textSize="18sp"
-        app:layout_constraintStart_toEndOf="@+id/textView24"
-        app:layout_constraintTop_toTopOf="@+id/textView24" />
+                    <RadioButton
+                        android:id="@+id/rb_outflow_pie"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:checked="true"
+                        android:text="Outflow"
+                        android:textSize="18sp" />
+
+                    <RadioButton
+                        android:id="@+id/rb_inflow_pie"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Inflow"
+                        android:textSize="18sp" />
+                </RadioGroup>
+
+                <com.github.mikephil.charting.charts.PieChart
+                    android:id="@+id/pie_chart"
+                    android:layout_width="match_parent"
+                    android:layout_height="300dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginStart="8dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="1.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/radio_group_pie">
+
+                </com.github.mikephil.charting.charts.PieChart>
+
+                <TextView
+                    android:id="@+id/tv_pie_chart_msg"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginStart="8dp"
+                    android:padding="8dp"
+                    android:text="No sufficient data available in selected time period."
+                    android:textAlignment="center"
+                    android:textColor="@color/c11"
+                    android:visibility="invisible"
+                    app:layout_constraintBottom_toBottomOf="@id/pie_chart"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="1.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/radio_group_pie" />
+
+                <TextView
+                    android:id="@+id/tv_category_chart"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/border_top"
+                    android:padding="8dp"
+                    android:text="GROWTH OF CATEGORY"
+                    android:textAlignment="center"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/pie_chart" />
+
+                <RadioGroup
+                    android:id="@+id/radio_group_list"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="32dp"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginTop="8dp"
+                    android:orientation="horizontal"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="@id/spin_layout_category"
+                    app:layout_constraintTop_toBottomOf="@id/tv_category_chart">
+
+                    <RadioButton
+                        android:id="@+id/rb_outflow_list"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:checked="true"
+                        android:text="Outflow"
+                        android:textSize="18sp" />
+
+                    <RadioButton
+                        android:id="@+id/rb_inflow_list"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Inflow"
+                        android:textSize="18sp" />
+                </RadioGroup>
+
+                <RelativeLayout
+                    android:id="@+id/spin_layout_category"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="32dp"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/rounded_corner"
+                    android:orientation="horizontal"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/radio_group_list">
+
+                    <Spinner
+                        android:id="@+id/spin_category"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="5dp"
+                        android:background="@android:color/transparent"
+                        android:gravity="center"
+                        android:spinnerMode="dialog"
+                        android:textSize="20sp" />
+
+                    <ImageView
+                        android:layout_width="45dp"
+                        android:layout_height="45dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_gravity="center"
+                        android:src="@drawable/dropdown_arrow" />
+                </RelativeLayout>
+
+                <com.github.mikephil.charting.charts.LineChart
+                    android:id="@+id/list_chart"
+                    android:layout_width="match_parent"
+                    android:layout_height="300dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="4dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="1.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/spin_layout_category">
+
+                </com.github.mikephil.charting.charts.LineChart>
+
+                <TextView
+                    android:id="@+id/tv_line_chart_msg"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginStart="8dp"
+                    android:padding="8dp"
+                    android:text="No sufficient data available for this category."
+                    android:textAlignment="center"
+                    android:textColor="@color/c11"
+                    android:visibility="invisible"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="1.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/spin_layout_category" />
+
+            </android.support.constraint.ConstraintLayout>
+
+
+        </LinearLayout>
+    </ScrollView>
+
 
 </android.support.constraint.ConstraintLayout>

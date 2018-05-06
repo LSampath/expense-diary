@@ -2,7 +2,10 @@ package com.lahiru.cem.controllers;
 
 import android.content.ContentValues;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteConstraintException;
 import android.database.sqlite.SQLiteDatabase;
+import android.provider.ContactsContract;
+import android.util.Log;
 
 import com.lahiru.cem.models.Account;
 
@@ -64,4 +67,18 @@ public class AccountController {
         return db.delete(DatabaseHelper.ACCOUNT_TABLE, "aid=?", new String[]{aid});
     }
 
+    public static long updateAccount(DatabaseHelper dbHelper, Account account) {
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("accname", account.getAccountName());
+        values.put("email", account.getEmail());
+        values.put("pin", account.getPin());
+        long result;
+        try {
+            result = db.update(DatabaseHelper.ACCOUNT_TABLE, values, "aid=?", new String[]{account.getAid()});
+        } catch (SQLiteConstraintException ex) {
+            return -99;
+        }
+        return result;
+    }
 }

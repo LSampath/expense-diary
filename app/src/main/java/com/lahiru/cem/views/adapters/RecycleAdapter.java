@@ -20,6 +20,7 @@ import com.lahiru.cem.controllers.TransactionController;
 import com.lahiru.cem.models.AppData;
 import com.lahiru.cem.models.ListItem;
 import com.lahiru.cem.models.Transaction;
+import com.lahiru.cem.views.home.HomeActivity;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -55,9 +56,6 @@ public class RecycleAdapter extends RecyclerView.Adapter<RecycleAdapter.ViewHold
                 break;
             case ListItem.REPAYMENT_ITEM:
                 layoutType = R.layout.list_item_transaction;
-                break;
-            case ListItem.FORECAST_ITEM:
-                layoutType = R.layout.list_item_forecast_total;
                 break;
         }
         View view = LayoutInflater.from(parent.getContext()).inflate(layoutType, parent, false);
@@ -177,26 +175,6 @@ public class RecycleAdapter extends RecyclerView.Adapter<RecycleAdapter.ViewHold
                 }
             });
 
-        //--------if type == FORECAST_ITEM then bind details----------------------------------------
-        } else if (listItem.getType() == ListItem.FORECAST_ITEM) {
-            String[] values = listItem.getValue().split("[|]");
-            String category = values[0];
-            int color = Integer.parseInt(values[1]);
-            String inOut = values[2];
-            String period = values[3];
-            // values[4] = day or month
-
-//            double predictedTotal = SummaryController.getForecastedValue(db, category, inOut, period, values[4]);
-            double predictedTotal = 23000.93;
-
-            holder.headingText.setText(category);
-            holder.descriptionText.setText("Rs. " + predictedTotal);
-            if (inOut.equals("inflow")) {
-                holder.descriptionText.setTextColor(context.getResources().getColor(R.color.inflow_color));
-            } else {
-                holder.descriptionText.setTextColor(context.getResources().getColor(R.color.outflow_color));
-            }
-            holder.headingText.setTextColor(context.getResources().getColor(color));
         }
     }
 

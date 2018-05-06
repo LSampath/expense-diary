@@ -1,8 +1,10 @@
-package com.lahiru.cem.views.account;
+package com.lahiru.cem.views.start;
 
+import android.app.AlarmManager;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -19,6 +21,8 @@ import com.lahiru.cem.controllers.DatabaseHelper;
 import com.lahiru.cem.models.Account;
 import com.lahiru.cem.models.AppData;
 
+import java.util.Calendar;
+
 public class StartActivity extends AppCompatActivity {
 
     private Fragment curFragment;
@@ -33,7 +37,30 @@ public class StartActivity extends AppCompatActivity {
 
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
 
-        //--------check for shared preferences------------------------------------------------------
+        // ------- check for first run -------------------------------------------------------------
+        SharedPreferences initPreferences = getSharedPreferences("INITIALIZATION_PREFERENCES", Context.MODE_PRIVATE);
+        boolean first_run = initPreferences.getBoolean("FIRST_RUN", true);
+//        if (first_run) {
+        if (true) {
+            initPreferences.edit().putBoolean("FIRST_RUN", false).commit();
+
+            AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+
+            Intent notificationIntent = new Intent("android.media.action.DISPLAY_NOTIFICATION");
+            notificationIntent.addCategory("android.intent.category.DEFAULT");
+            PendingIntent broadcast = PendingIntent.getBroadcast(
+                    this, 100, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+            Calendar cal = Calendar.getInstance();
+            cal.add(Calendar.SECOND, 15);
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+//                alarmManager.setExact(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), broadcast);
+                alarmManager.setRepeating(AlarmManager.RTC, cal.getTimeInMillis(), AlarmManager.INTERVAL_DAY, broadcast);
+            }
+
+        }
+
+        //--------check for previous login ---------------------------------------------------------
         DatabaseHelper db = new DatabaseHelper(this);
 
         SharedPreferences accPreferences = getSharedPreferences("ACCOUNT_PREFERENCES", Context.MODE_PRIVATE);
@@ -50,7 +77,7 @@ public class StartActivity extends AppCompatActivity {
         //----load first fragment and setting back btn listener-------------------------------------
         changeFragment(R.layout.fragment_select_account);
 
-        toolbar = (android.support.v7.widget.Toolbar) findViewById(R.id.toolbar);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             toolbar.setNavigationOnClickListener(new View.OnClickListener() {
                 @Override

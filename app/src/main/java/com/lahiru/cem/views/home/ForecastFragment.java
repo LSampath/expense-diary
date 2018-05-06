@@ -1,38 +1,22 @@
 package com.lahiru.cem.views.home;
 
-import android.app.AlarmManager;
-import android.app.PendingIntent;
-import android.content.Context;
-import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ImageView;
 import android.widget.RadioGroup;
-import android.widget.RelativeLayout;
 import android.widget.Spinner;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.lahiru.cem.R;
 import com.lahiru.cem.controllers.DatabaseHelper;
 import com.lahiru.cem.controllers.SummaryController;
-import com.lahiru.cem.controllers.TransactionController;
 import com.lahiru.cem.models.AppData;
-import com.lahiru.cem.models.ListItem;
 import com.lahiru.cem.views.adapters.CustomSpinAdapter;
-import com.lahiru.cem.views.adapters.NotificationReceiver;
-import com.lahiru.cem.views.adapters.RecycleAdapter;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 
 
 public class ForecastFragment extends Fragment {
@@ -110,8 +94,8 @@ public class ForecastFragment extends Fragment {
     }
 
     private void forecastNextValue(String category, String inOut) {
-        ArrayList<String[]> totals = SummaryController.getTotalsByDate(db, category, inOut);
-        if ()
+        ArrayList<String[]> totals = SummaryController.getTotalsByDate(db, null, category, inOut);
+
         for (String[] total: totals) {
             Log.i("TEST", "date = " + total[0] + " | total = " + total[1]);
         }

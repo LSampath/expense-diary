@@ -3,6 +3,7 @@ package com.lahiru.cem.controllers;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.provider.ContactsContract;
 import android.util.Log;
 
 import com.lahiru.cem.models.AppData;
@@ -110,17 +111,17 @@ public class TransactionController {
                         null);
                 if (res.moveToNext()) {
                     tran.setRepaymentDetails(res.getString(0));
+                    Log.i("TEST", "controller lend_tid=" + tran.getLendTID() + " tid=" + tran.getTID());
                 }
             }
         }
         return tran;
     }
 
-    public static ArrayList<String> getTransactionDates(DatabaseHelper dbHelper) {
-        String aid = AppData.getInstance().getAccount().getAid();
+    public static ArrayList<String> getTransactionDates(DatabaseHelper dbHelper, String aid) {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         Cursor res = db.rawQuery("select distinct date from " + DatabaseHelper.TRANSACTION_TABLE +
-                " where aid='" + aid + "' order by date", null);
+                " where aid='" + aid + "' order by date desc", null);
         ArrayList<String> dateList = new ArrayList<>();
         while (res.moveToNext()) {
             dateList.add(res.getString(0));
@@ -128,10 +129,10 @@ public class TransactionController {
         return dateList;
     }
 
-    public static ArrayList<String> getLendingDates(DatabaseHelper dbHelper, String inOut) {
+    public static ArrayList<String> getLendingDates(DatabaseHelper dbHelper, String aid, String inOut) {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         Cursor res = db.rawQuery("select distinct date, category from " + DatabaseHelper.TRANSACTION_TABLE + " where " +
-                "type='" + inOut + "' and (category='Loan' or category='Debt') order by date", null);
+                "type='" + inOut + "' and aid=" + aid + " and (category='Loan' or category='Debt') order by date", null);
         ArrayList<String> dateList = new ArrayList<>();
         while (res.moveToNext()) {
             dateList.add(res.getString(0));
@@ -139,9 +140,10 @@ public class TransactionController {
         return dateList;
     }
 
-    public static ArrayList<String> getTransactions(DatabaseHelper dbHelper, String date) {
+    public static ArrayList<String> getTransactions(DatabaseHelper dbHelper, String aid, String date) {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
-        Cursor res = db.rawQuery("select tid from " + DatabaseHelper.TRANSACTION_TABLE + " where date='" + date + "'", null);
+        Cursor res = db.rawQuery("select tid from " + DatabaseHelper.TRANSACTION_TABLE + " where " +
+                "date='" + date + "' and aid=" + aid, null);
         ArrayList<String> transList = new ArrayList<>();
         while (res.moveToNext()) {
             transList.add(res.getString(0));
@@ -151,17 +153,52 @@ public class TransactionController {
 
     public static int deleteTransaction(DatabaseHelper dbHelper, String tid) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
+        Cursor res = db.rawQuery("select tid from " + DatabaseHelper.TRANSACTION_TABLE +
+                " natural join " + DatabaseHelper.REPAYMENT_TABLE + " where lend_tid=" + tid, null);
+        while (res.moveToNext()) {
+            db.delete(DatabaseHelper.TRANSACTION_TABLE, "tid=?", new String[]{res.getString(0)});
+        }
         return db.delete(DatabaseHelper.TRANSACTION_TABLE, "tid=?", new String[]{tid});
     }
 
-    public static ArrayList<String> getLendings(DatabaseHelper dbHelper, String date, String inOut) {
+    public static ArrayList<String> getLendings(DatabaseHelper dbHelper, String aid, String date, String inOut) {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
-        Cursor res = db.rawQuery("select tid, category from " + DatabaseHelper.TRANSACTION_TABLE + " where date='" + date + "' " +
-                "and type='" + inOut + "' and (category='Loan' or category='Debt') order by date", null);
+        Cursor res;
+        if (inOut.equals("ALL")) {
+            res = db.rawQuery("select tid from " + DatabaseHelper.TRANSACTION_TABLE + " where date='" + date + "' " +
+                    "and aid=" + aid + " and (category='Loan' or category='Debt') order by date", null);
+        } else {
+            res = db.rawQuery("select tid from " + DatabaseHelper.TRANSACTION_TABLE + " where date='" + date + "' " +
+                    "and aid=" + aid + " and type='" + inOut + "' and (category='Loan' or category='Debt') order by date", null);
+        }
         ArrayList<String> transList = new ArrayList<>();
         while (res.moveToNext()) {
             transList.add(res.getString(0));
         }
         return transList;
     }
+
+    public static double getRepayedAmount(DatabaseHelper dbHelper, String aid, String lend_tid) {
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        Cursor res = db.rawQuery("select sum(amount) from " + DatabaseHelper.TRANSACTION_TABLE + " natural join " +
+               DatabaseHelper.REPAYMENT_TABLE + " where aid=" + aid + " and lend_tid=" + lend_tid , null);
+        double amount = 0;
+        if (res.moveToNext()) {
+            amount += res.getDouble(0);
+        }
+        return amount;
+    }
+
+    public static ArrayList<String> getDueRepaymentDates(DatabaseHelper dbHelper, String aid, String today) {
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        Cursor res = db.rawQuery("select distinct date from " + DatabaseHelper.TRANSACTION_TABLE +
+                " natural join " + DatabaseHelper.LENDING_TABLE +
+                " where aid='" + aid + "' and duedate>='" + today + "' order by date", null);
+        ArrayList<String> dateList = new ArrayList<>();
+        while (res.moveToNext()) {
+            dateList.add(res.getString(0));
+        }
+        return dateList;
+    }
+
 }

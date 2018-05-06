@@ -1,4 +1,4 @@
-package com.lahiru.cem.views.account;
+package com.lahiru.cem.views.start;
 
 import android.content.Intent;
 import android.os.Build;

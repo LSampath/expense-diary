@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/lighter_gray"
+    android:background="@drawable/border_bottom"
     android:paddingBottom="@dimen/list_item_padding_small"
     android:paddingTop="@dimen/list_item_padding_small">
 
@@ -12,6 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         tools:layout_editor_absoluteX="0dp"
+        android:background="@drawable/border_bottom"
         tools:layout_editor_absoluteY="0dp"
         tools:ignore="MissingConstraints">
 

@@ -10,6 +10,7 @@ import android.util.Log;
 import com.lahiru.cem.R;
 import com.lahiru.cem.controllers.DatabaseHelper;
 import com.lahiru.cem.controllers.TransactionController;
+import com.lahiru.cem.models.AppData;
 import com.lahiru.cem.models.ListItem;
 import com.lahiru.cem.views.adapters.RecycleAdapter;
 
@@ -45,10 +46,11 @@ public class RepaymentActivity extends AppCompatActivity {
         Bundle bundle = getIntent().getExtras();
         String inOut = bundle.getString("IN_OUT");
 
-        ArrayList<String> dates = TransactionController.getLendingDates(db, inOut);
+        String aid = AppData.getInstance().getAccount().getAid();
+        ArrayList<String> dates = TransactionController.getLendingDates(db, aid, inOut);
         for (String date: dates) {
             listItems.add(new ListItem(ListItem.DATE_ITEM, date));
-            ArrayList<String> transList = TransactionController.getLendings(db, date, inOut);
+            ArrayList<String> transList = TransactionController.getLendings(db, aid, date, inOut);
             for (String tid: transList) {
                 listItems.add(new ListItem(ListItem.REPAYMENT_ITEM, tid));
             }

@@ -1,10 +1,11 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/frameLayout5"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/frameLayout10"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.lahiru.cem.views.start.NewAccountFragment">
+    android:background="@color/white"
+    tools:context="com.lahiru.cem.views.account.EditAccountFragment">
 
     <TextView
         android:id="@+id/textView2"
@@ -12,13 +13,16 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="16dp"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
         android:fontFamily="sans-serif"
-        android:text="Create new account"
+        android:text="Your Account"
         android:textAlignment="center"
         android:textColor="@color/black_overlay"
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -28,7 +32,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="60dp"
         android:layout_marginStart="60dp"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="40dp"
         android:background="@drawable/rounded_corner"
         android:ems="10"
         android:hint="account name"
@@ -59,7 +63,7 @@
         app:layout_constraintTop_toBottomOf="@+id/edt_acc_name" />
 
     <EditText
-        android:id="@+id/edt_pin"
+        android:id="@+id/edt_new_pin"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="60dp"
@@ -67,7 +71,7 @@
         android:layout_marginTop="16dp"
         android:background="@drawable/rounded_corner"
         android:ems="10"
-        android:hint="PIN"
+        android:hint="new PIN"
         android:inputType="numberPassword"
         android:padding="10dp"
         android:textAlignment="center"
@@ -84,27 +88,45 @@
         android:layout_marginStart="60dp"
         android:layout_marginTop="16dp"
         android:background="@drawable/rounded_corner"
-        android:padding="10dp"
         android:ems="10"
         android:hint="confirm PIN"
         android:inputType="numberPassword"
+        android:padding="10dp"
         android:textAlignment="center"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edt_pin" />
+        app:layout_constraintTop_toBottomOf="@+id/edt_new_pin" />
 
-    <Button
-        android:id="@+id/btn_submit"
-        android:layout_width="179dp"
+    <EditText
+        android:id="@+id/edt_current_pin"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="32dp"
-        android:text="Open Account"
+        android:layout_marginEnd="60dp"
+        android:layout_marginStart="60dp"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/rounded_corner"
+        android:ems="10"
+        android:hint="current PIN"
+        android:inputType="numberPassword"
+        android:padding="10dp"
+        android:textAlignment="center"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/edt_confirm_pin" />
+
+    <Button
+        android:id="@+id/btn_save"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="24dp"
+        android:text="SAVE"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/edt_current_pin" />
 
 </android.support.constraint.ConstraintLayout>
