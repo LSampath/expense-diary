@@ -105,7 +105,7 @@ public class SummaryController {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         String query = "select date, sum(amount) from " + DatabaseHelper.TRANSACTION_TABLE +
                 " where aid=" + aid + " and type='" + type + "' and category='" + category + "' " +
-                "group by date order by date desc";
+                "group by date order by date asc";
         if (category.equals("ALL")) {
             query = "select date, sum(amount) from " + DatabaseHelper.TRANSACTION_TABLE +
                     " where aid=" + aid + " and type='" + type + "' group by date order by date asc";

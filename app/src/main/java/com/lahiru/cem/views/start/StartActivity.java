@@ -12,6 +12,7 @@ import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 
@@ -20,6 +21,7 @@ import com.lahiru.cem.controllers.AccountController;
 import com.lahiru.cem.controllers.DatabaseHelper;
 import com.lahiru.cem.models.Account;
 import com.lahiru.cem.models.AppData;
+import com.lahiru.cem.views.home.HomeActivity;
 
 import java.util.Calendar;
 
@@ -37,29 +39,6 @@ public class StartActivity extends AppCompatActivity {
 
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
 
-        // ------- check for first run -------------------------------------------------------------
-        SharedPreferences initPreferences = getSharedPreferences("INITIALIZATION_PREFERENCES", Context.MODE_PRIVATE);
-        boolean first_run = initPreferences.getBoolean("FIRST_RUN", true);
-//        if (first_run) {
-        if (true) {
-            initPreferences.edit().putBoolean("FIRST_RUN", false).commit();
-
-            AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-
-            Intent notificationIntent = new Intent("android.media.action.DISPLAY_NOTIFICATION");
-            notificationIntent.addCategory("android.intent.category.DEFAULT");
-            PendingIntent broadcast = PendingIntent.getBroadcast(
-                    this, 100, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-            Calendar cal = Calendar.getInstance();
-            cal.add(Calendar.SECOND, 15);
-
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-//                alarmManager.setExact(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), broadcast);
-                alarmManager.setRepeating(AlarmManager.RTC, cal.getTimeInMillis(), AlarmManager.INTERVAL_DAY, broadcast);
-            }
-
-        }
-
         //--------check for previous login ---------------------------------------------------------
         DatabaseHelper db = new DatabaseHelper(this);
 
@@ -72,6 +51,8 @@ public class StartActivity extends AppCompatActivity {
             Intent intent = new Intent("com.lahiru.cem.views.home.HomeActivity");
             startActivity(intent);
             finish();
+        } else {
+            Log.i("TEST", "account not found for AID=" + aid + " ACC_NAME=" + accname);
         }
 
         //----load first fragment and setting back btn listener-------------------------------------

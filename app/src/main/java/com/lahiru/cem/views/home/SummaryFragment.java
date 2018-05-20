@@ -3,6 +3,7 @@ package com.lahiru.cem.views.home;
 import android.app.DatePickerDialog;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
@@ -108,8 +109,18 @@ public class SummaryFragment extends Fragment {
                 fromDateCalendar.set(Calendar.YEAR, year);
                 fromDateCalendar.set(Calendar.MONTH, month);
                 fromDateCalendar.set(Calendar.DAY_OF_MONTH, day);
-                String myFormat = "EEE,  dd MMM yyyy";
+                String myFormat = "EEE, dd MMM yyyy";
                 SimpleDateFormat dateFormat = new SimpleDateFormat(myFormat, Locale.US);
+                try {
+                    long from = fromDateCalendar.getTimeInMillis();
+                    long to = dateFormat.parse(toDateText.getText().toString()).getTime();
+                    if (to < from) {
+                        Snackbar.make(fromDateText, "Start date cannot be larger than end of the period", Snackbar.LENGTH_SHORT).show();
+                        return;
+                    }
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
                 fromDateText.setText(dateFormat.format(fromDateCalendar.getTime()));
                 loadPieChart();
             }
@@ -134,8 +145,18 @@ public class SummaryFragment extends Fragment {
                 toDateCalendar.set(Calendar.YEAR, year);
                 toDateCalendar.set(Calendar.MONTH, month);
                 toDateCalendar.set(Calendar.DAY_OF_MONTH, day);
-                String myFormat = "EEE,  dd MMM yyyy";
+                String myFormat = "EEE, dd MMM yyyy";
                 SimpleDateFormat dateFormat = new SimpleDateFormat(myFormat, Locale.US);
+                try {
+                    long to = toDateCalendar.getTimeInMillis();
+                    long from = dateFormat.parse(fromDateText.getText().toString()).getTime();
+                    if (to < from) {
+                        Snackbar.make(fromDateText, "End date cannot be smaller than end of the period", Snackbar.LENGTH_SHORT).show();
+                        return;
+                    }
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
                 toDateText.setText(dateFormat.format(toDateCalendar.getTime()));
                 loadPieChart();
             }
@@ -150,21 +171,6 @@ public class SummaryFragment extends Fragment {
                 ).show();
             }
         });
-
-        //set initial max and min dates-------------------------------------------------------------
-        String[] dates = SummaryController.getMaxMinDates(db, appData.getAccount().getAid());
-
-        DateFormat to = new SimpleDateFormat("EEE,  dd MMM yyyy");
-        DateFormat from = new SimpleDateFormat("yyyy-MM-dd");
-        if (dates == null) {
-            dates = new String[]{to.format(new Date()), to.format(new Date())};
-        }
-        try {
-            fromDateText.setText(to.format(from.parse(dates[1])));
-            toDateText.setText(to.format(from.parse(dates[0])));
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
 
         // initialize radio group for pie chart ----------------------------------------------------
         radioGroupPie = fragment.findViewById(R.id.radio_group_pie);
@@ -222,20 +228,16 @@ public class SummaryFragment extends Fragment {
                 String category = categoryList.get(index);
                 PieEntry pieEntry = dataList.get(index);
 
-                int selected = radioGroupList.getCheckedRadioButtonId();
+                int selected = radioGroupPie.getCheckedRadioButtonId();
                 int icon;
-                int color;
-                if (selected == R.id.rb_outflow_list) {
+                if (selected == R.id.rb_outflow_pie) {
                     icon = AppData.getInstance().getOutflowIcon(category);
-                    color = activity.getResources().getColor(R.color.outflow_color);
                 } else {
                     icon = AppData.getInstance().getInflowIcon(category);
-                    color = activity.getResources().getColor(R.color.inflow_color);
                 }
-
                 new StyleableToast
                         .Builder(activity)
-                        .text(category + ", Total amount : Rs." + pieEntry.getY())
+                        .text(category + ", Rs." + pieEntry.getY() + " of total")
                         .textColor(Color.BLACK)
                         .iconStart(icon)
                         .iconEnd(icon)
@@ -249,7 +251,7 @@ public class SummaryFragment extends Fragment {
             }
         });
         pieChart.setRotationEnabled(true);
-        pieChart.setHoleRadius(30f);
+        pieChart.setHoleRadius(40f);
         pieChart.setTransparentCircleAlpha(0);
         pieChart.setDrawEntryLabels(true);
         Description dsPie = new Description();
@@ -296,16 +298,32 @@ public class SummaryFragment extends Fragment {
     }
 
     private void loadPieChart() {
+        String[] dates = SummaryController.getMaxMinDates(db, appData.getAccount().getAid());
+
+        DateFormat to = new SimpleDateFormat("EEE,  dd MMM yyyy");
+        DateFormat from = new SimpleDateFormat("yyyy-MM-dd");
+        if (dates == null) {
+            dates = new String[]{to.format(new Date()), to.format(new Date())};
+        }
+        try {
+            fromDateText.setText(to.format(from.parse(dates[1])));
+            toDateText.setText(to.format(from.parse(dates[0])));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
         String fromDate = fromDateText.getText().toString();
         String toDate = toDateText.getText().toString();
-        DateFormat from = new SimpleDateFormat("EEE,  dd MMM yyyy");
-        DateFormat to = new SimpleDateFormat("yyyy-MM-dd");
+        from = new SimpleDateFormat("EEE, dd MMM yyyy");
+        to = new SimpleDateFormat("yyyy-MM-dd");
         try {
             fromDate = to.format(from.parse(fromDate));
             toDate = to.format(from.parse(toDate));
         } catch (ParseException e) {
             e.printStackTrace();
         }
+
+        Log.i("TEST", "after from - " + fromDate + " to - " + toDate);
 
         int selected = radioGroupPie.getCheckedRadioButtonId();
         String inOut = "inflow";

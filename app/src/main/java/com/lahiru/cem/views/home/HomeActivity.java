@@ -23,10 +23,13 @@ public class HomeActivity extends AppCompatActivity {
 
     private ViewPager mViewPager;
 
+    public static boolean running;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+        running = true; // logout purpose
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -58,37 +61,30 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.action_about) {
-            Intent intent = new Intent("com.lahiru.cem.views.AboutActivity");
-            startActivity(intent);
-        } else if (item.getItemId() == R.id.action_account) {
-            Intent intent = new Intent("com.lahiru.cem.views.account.AccountActivity");
-            startActivityForResult(intent, AppData.ACCOUNT_RESULT_CODE);
-        } else if (item.getItemId() == R.id.action_logout) {
-            SharedPreferences accPreferences = this.getSharedPreferences("ACCOUNT_PREFERENCES", Context.MODE_PRIVATE);
-            SharedPreferences.Editor editor = accPreferences.edit();
-            editor.remove("AID");
-            editor.remove("ACC_NAME");
-            editor.apply();
-            Intent intent = new Intent(this, StartActivity.class);
-            startActivity(intent);
-            finish();
+            Intent intent = new Intent("com.lahiru.cem.views.SettingsActivity");
+            startActivityForResult(intent, AppData.SETTINGS_RESULT_CODE);
         }
+
         return true;
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == AppData.ACCOUNT_RESULT_CODE && resultCode == Activity.RESULT_OK) {
+        if (requestCode == AppData.SETTINGS_RESULT_CODE && resultCode == Activity.RESULT_OK) {
             String type =  data.getStringExtra("TYPE");
-            if (type.equals("DROP")) {
+            if (type.equals("DROP_LOGOUT")) {
                 Intent intent = new Intent(this, StartActivity.class);
                 startActivity(intent);
                 finish();
-
             }
         }
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        running = false;
+    }
 }
 

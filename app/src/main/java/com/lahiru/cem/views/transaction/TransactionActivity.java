@@ -609,7 +609,7 @@ public class TransactionActivity extends AppCompatActivity {
         }
         if (result != -1) {
             finish();
-            Toast.makeText(this, "Transaction recorded. " + result, Toast.LENGTH_SHORT).show();
+//            Toast.makeText(this, "Transaction recorded. " + result, Toast.LENGTH_SHORT).show();
         }else {
             Toast.makeText(this, "Something is wrong!", Toast.LENGTH_SHORT).show();
         }
@@ -661,5 +661,11 @@ public class TransactionActivity extends AppCompatActivity {
     private void hideSoftKeyboard() {
         InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
         inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+    }
+
+    @Override
+    protected void onResume() {
+        radioGroup.requestFocus();
+        super.onResume();
     }
 }

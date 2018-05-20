@@ -43,6 +43,8 @@ public class AccountActivity extends AppCompatActivity {
                 }
             });
         }
+
+        changeFragment(R.layout.fragment_current_account);
     }
 
     public void changeFragment(int fragmentId) {

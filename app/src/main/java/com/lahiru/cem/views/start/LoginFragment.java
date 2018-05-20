@@ -40,7 +40,7 @@ public class LoginFragment extends Fragment {
 
         dbHelper = new DatabaseHelper(activity);
 
-        TextView accNameTxtView = fragment.findViewById(R.id.tv_pin);
+        TextView accNameTxtView = fragment.findViewById(R.id.tv_accname);
         accNameTxtView.setText(curAccount.getAccountName());
 
         final EditText pinEdtTxt = fragment.findViewById(R.id.edt_pin);

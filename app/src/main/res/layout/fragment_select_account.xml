@@ -4,6 +4,7 @@
     android:id="@+id/frameLayout3"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     tools:context="com.lahiru.cem.views.start.SelectAccountFragment">
 
     <TextView
@@ -16,7 +17,7 @@
         android:fontFamily="sans-serif"
         android:text="Select your account"
         android:textAlignment="center"
-        android:textColor="@color/black_overlay"
+        android:textColor="@color/black"
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

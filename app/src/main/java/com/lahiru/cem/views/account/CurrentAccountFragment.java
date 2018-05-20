@@ -60,8 +60,10 @@ public class CurrentAccountFragment extends Fragment {
                 editor.remove("AID");
                 editor.remove("ACC_NAME");
                 editor.apply();
-                Intent intent = new Intent(getActivity(), StartActivity.class);
-                startActivity(intent);
+
+                Intent intent = new Intent();
+                intent.putExtra("TYPE", "DROP_LOGOUT");
+                getActivity().setResult(Activity.RESULT_OK, intent);
                 getActivity().finish();
             }
         });
@@ -91,8 +93,15 @@ public class CurrentAccountFragment extends Fragment {
                     Toast.makeText(getActivity(), "Sorry, something went wrong." + result, Toast.LENGTH_LONG).show();
                 } else {
                     Toast.makeText(getActivity(), "Account successfully removed." + result, Toast.LENGTH_LONG).show();
+
+                    SharedPreferences accPreferences = getActivity().getSharedPreferences("ACCOUNT_PREFERENCES", Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = accPreferences.edit();
+                    editor.remove("AID");
+                    editor.remove("ACC_NAME");
+                    editor.apply();
+
                     Intent intent = new Intent();
-                    intent.putExtra("TYPE", "DROP");
+                    intent.putExtra("TYPE", "DROP_LOGOUT");
                     getActivity().setResult(Activity.RESULT_OK, intent);
                     getActivity().finish();
                 }

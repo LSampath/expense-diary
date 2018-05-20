@@ -67,7 +67,7 @@ public class AccountController {
         return db.delete(DatabaseHelper.ACCOUNT_TABLE, "aid=?", new String[]{aid});
     }
 
-    public static long updateAccount(DatabaseHelper dbHelper, Account account) {
+    public static long updateAccount(DatabaseHelper dbHelper, Account account, String currentPin) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put("accname", account.getAccountName());
@@ -75,7 +75,8 @@ public class AccountController {
         values.put("pin", account.getPin());
         long result;
         try {
-            result = db.update(DatabaseHelper.ACCOUNT_TABLE, values, "aid=?", new String[]{account.getAid()});
+            result = db.update(DatabaseHelper.ACCOUNT_TABLE, values,
+                    "aid=? and pin=?", new String[]{account.getAid(), currentPin});
         } catch (SQLiteConstraintException ex) {
             return -99;
         }

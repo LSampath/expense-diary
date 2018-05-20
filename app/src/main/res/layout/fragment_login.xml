@@ -4,6 +4,7 @@
     android:id="@+id/frameLayout4"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     tools:context="com.lahiru.cem.views.start.LoginFragment">
 
     <TextView
@@ -16,14 +17,14 @@
         android:fontFamily="sans-serif"
         android:text="Welcome"
         android:textAlignment="center"
-        android:textColor="@color/black_overlay"
+        android:textColor="@color/black"
         android:textSize="36sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/tv_pin"
+        android:id="@+id/tv_accname"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
@@ -31,13 +32,26 @@
         android:fontFamily="sans-serif"
         android:text="AccountName"
         android:textAlignment="center"
-        android:textColor="@color/black_overlay"
+        android:textColor="@color/black"
         android:textSize="24sp"
-        android:textStyle="italic"
+        android:textStyle="bold|italic"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView2" />
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginStart="0dp"
+        android:layout_marginEnd="0dp"
+        android:src="@drawable/icn_account"
+        app:layout_constraintTop_toBottomOf="@+id/tv_accname"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:layout_editor_absoluteX="144dp" />
 
     <EditText
         android:id="@+id/edt_pin"
@@ -45,7 +59,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="70dp"
         android:layout_marginStart="70dp"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="8dp"
         android:background="@drawable/rounded_corner"
         android:ems="10"
         android:hint="PIN"
@@ -56,7 +70,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_pin" />
+        app:layout_constraintTop_toBottomOf="@+id/imageView2" />
 
     <CheckBox
         android:id="@+id/cb_remember"

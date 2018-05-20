@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.support.design.widget.Snackbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -170,7 +171,7 @@ public class NewAccountFragment extends Fragment {
             Toast.makeText(getActivity(), "Account name already exists.", Toast.LENGTH_SHORT).show();
             return;
         }else {
-            Toast.makeText(getActivity(), "AID : " + result, Toast.LENGTH_SHORT).show();
+//            Toast.makeText(getActivity(), "Account created with AID:"+ result, Toast.LENGTH_SHORT).show();
             AppData.getInstance().setAccount(new Account(String.valueOf(result), accName, email, null));
 
             Intent intent = new Intent("com.lahiru.cem.views.home.HomeActivity");

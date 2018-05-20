@@ -3,10 +3,12 @@ package com.lahiru.cem.views.account;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -38,6 +40,7 @@ public class EditAccountFragment extends Fragment {
     private EditText confirmPinTxt;
     private EditText currentPinTxt;
     private Button saveBtn;
+    private TextView accountTitleTxt;
 
     private String accNameValid;
     private String emailValid;
@@ -58,22 +61,23 @@ public class EditAccountFragment extends Fragment {
         confirmPinTxt = fragment.findViewById(R.id.edt_confirm_pin);
         currentPinTxt = fragment.findViewById(R.id.edt_current_pin);
         saveBtn = fragment.findViewById(R.id.btn_save);
+        accountTitleTxt = fragment.findViewById(R.id.tv_account_title);
 
         // initialize account name text ------------------------------------------------------------
-        accNameTxt.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View view, boolean b) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    if (b) {
-                        accNameTxt.setHint("");
-                    } else {
-                        if (accNameTxt.getText().toString().equals("")) {
-                            accNameTxt.setHint("account name");
-                        }
-                    }
-                }
-            }
-        });
+//        accNameTxt.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+//            @Override
+//            public void onFocusChange(View view, boolean b) {
+//                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+//                    if (b) {
+//                        accNameTxt.setHint("");
+//                    } else {
+//                        if (accNameTxt.getText().toString().equals("")) {
+//                            accNameTxt.setHint("account name");
+//                        }
+//                    }
+//                }
+//            }
+//        });
         accNameValid = "Please provide a name.";
         accNameTxt.addTextChangedListener(new TextValidator(accNameTxt) {
             @Override
@@ -94,20 +98,20 @@ public class EditAccountFragment extends Fragment {
         });
 
         // initialize email text -------------------------------------------------------------------
-        emailTxt.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View view, boolean b) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    if (b) {
-                        emailTxt.setHint("");
-                    } else {
-                        if (emailTxt.getText().toString().equals("")) {
-                            emailTxt.setHint("email");
-                        }
-                    }
-                }
-            }
-        });
+//        emailTxt.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+//            @Override
+//            public void onFocusChange(View view, boolean b) {
+//                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+//                    if (b) {
+//                        emailTxt.setHint("");
+//                    } else {
+//                        if (emailTxt.getText().toString().equals("")) {
+//                            emailTxt.setHint("email");
+//                        }
+//                    }
+//                }
+//            }
+//        });
         emailValid = "Please provide an email.";
         emailTxt.addTextChangedListener(new TextValidator(emailTxt) {
             @Override
@@ -250,8 +254,7 @@ public class EditAccountFragment extends Fragment {
         fragment.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
-                InputMethodManager inputMethodManager = (InputMethodManager) getActivity().getSystemService(INPUT_METHOD_SERVICE);
-                inputMethodManager.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), 0);
+                hideSoftKeyboard();
                 return false;
             }
         });
@@ -291,23 +294,34 @@ public class EditAccountFragment extends Fragment {
             pin = currentPin;
         }
         Account account = new Account(aid, accName, email, pin);
-        // authenticate
-//        if (AccountController.authenticateAccount(db, aid, currentPin) == null) {
-//            Toast.makeText(this, "Incorrect PIN.", Toast.LENGTH_SHORT).show();
-//            return;
-//        }
+
         // then save
-        long result = AccountController.updateAccount(db, account);
+        long result = AccountController.updateAccount(db, account, currentPin);
         if (result == -99) {
             Toast.makeText(getActivity(), "Sorry, Account name already in use." + result, Toast.LENGTH_SHORT).show();
         } else if (result <= 0 ) {
             Toast.makeText(getActivity(), "Sorry, something went wrong." + result, Toast.LENGTH_LONG).show();
         } else {
             Toast.makeText(getActivity(), "Successfully updated." + result, Toast.LENGTH_LONG).show();
+
+            appData.setAccount(account);
+            SharedPreferences accPreferences = getActivity().getSharedPreferences("ACCOUNT_PREFERENCES", Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = accPreferences.edit();
+            editor.putString("ACC_NAME", account.getAccountName());
+            editor.apply();
+
             Intent intent = new Intent();
             intent.putExtra("TYPE", "UPDATE");
             getActivity().setResult(Activity.RESULT_OK, intent);
             getActivity().finish();
+        }
+    }
+
+    private void hideSoftKeyboard() {
+        InputMethodManager inputMethodManager = (InputMethodManager) getActivity().getSystemService(INPUT_METHOD_SERVICE);
+        View focusedView = getActivity().getCurrentFocus();
+        if (focusedView != null) {
+            inputMethodManager.hideSoftInputFromWindow(focusedView.getWindowToken(), 0);
         }
     }
 

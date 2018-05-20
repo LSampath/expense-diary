@@ -2,20 +2,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.lahiru.cem.views.home.HomeActivity">
+
     <item
         android:id="@+id/action_about"
         android:orderInCategory="100"
-        android:title="@string/action_about"
-        app:showAsAction="never" />
-    <item
-        android:id="@+id/action_account"
-        android:orderInCategory="100"
-        android:title="@string/action_account"
-        app:showAsAction="never" />
-    <item
-        android:id="@+id/action_logout"
-        android:orderInCategory="100"
-        android:title="@string/action_logout"
-        app:showAsAction="never" />
+        android:icon="@drawable/settings_action"
+        android:title="Settings"
+        app:showAsAction="always" />
 
 </menu>

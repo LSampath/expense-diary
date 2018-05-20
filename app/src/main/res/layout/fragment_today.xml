@@ -15,30 +15,14 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <!--<TextView-->
-            <!--android:id="@+id/tv_today"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_marginBottom="24dp"-->
-            <!--android:layout_marginEnd="8dp"-->
-            <!--android:layout_marginStart="8dp"-->
-            <!--android:layout_marginTop="24dp"-->
-            <!--android:text="Monday, 13 August 2018"-->
-            <!--android:textColor="@color/colorPrimary"-->
-            <!--android:textSize="24sp"-->
-            <!--app:layout_constraintBottom_toBottomOf="parent"-->
-            <!--app:layout_constraintEnd_toEndOf="parent"-->
-            <!--app:layout_constraintStart_toStartOf="parent"-->
-            <!--app:layout_constraintTop_toTopOf="parent" />-->
-
         <com.tomer.fadingtextview.FadingTextView
             android:id="@+id/tv_today"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="24dp"
+            android:layout_marginBottom="16dp"
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="16dp"
             android:textColor="@color/colorPrimary"
             android:textSize="30sp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -80,7 +64,7 @@
             android:id="@+id/texttView4"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:text="Predicted total inflow"
             android:textAlignment="textEnd"
@@ -93,7 +77,7 @@
             android:id="@+id/wexttVieew4"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
+            android:layout_marginEnd="8dp"
             android:layout_marginTop="8dp"
             android:text="Predicted total outflow"
             android:textAlignment="textEnd"
@@ -107,7 +91,7 @@
             android:layout_width="160dp"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="8dp"
             android:text="UNABLE"
             android:textColor="@color/inflow_color"
             android:textSize="24sp"
@@ -121,7 +105,7 @@
             android:layout_width="160dp"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
-            android:layout_marginEnd="16dp"
+            android:layout_marginEnd="8dp"
             android:text="UNABLE"
             android:textAlignment="textEnd"
             android:textColor="@color/outflow_color"
@@ -179,7 +163,7 @@
             android:id="@+id/texttView44"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:text="Inflow rate"
             android:textAlignment="textEnd"
@@ -192,7 +176,7 @@
             android:id="@+id/wexttVieew44"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
+            android:layout_marginEnd="8dp"
             android:layout_marginTop="8dp"
             android:text="Outflow rate"
             android:textAlignment="textEnd"
@@ -206,7 +190,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="8dp"
             android:text="UNABLE"
             android:textColor="@color/inflow_color"
             android:textSize="18sp"
@@ -219,7 +203,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
-            android:layout_marginEnd="16dp"
+            android:layout_marginEnd="8dp"
             android:text="UNABLE"
             android:textAlignment="center"
             android:textColor="@color/outflow_color"

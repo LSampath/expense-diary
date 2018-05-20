@@ -201,4 +201,15 @@ public class TransactionController {
         return dateList;
     }
 
+    public static ArrayList<String> getLendingFromDuedate(DatabaseHelper dbHelper, String aid, String duedate) {
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        Cursor res = db.rawQuery("select tid from " + DatabaseHelper.LENDING_TABLE + " natural join " + DatabaseHelper.TRANSACTION_TABLE +
+                " where duedate='" + duedate + "' " +
+                "and aid=" + aid + " order by date", null);
+        ArrayList<String> transList = new ArrayList<>();
+        while (res.moveToNext()) {
+            transList.add(res.getString(0));
+        }
+        return transList;
+    }
 }
